@@ -8,15 +8,19 @@ set encoding=utf-8
 syntax on
 set number
 set nowrap
-set colorcolumn=80
 set cursorline
+set colorcolumn=80
+highlight ColorColumn ctermbg=gray
 
 set scrolloff=3
+
+" Indentation
 
 set expandtab " tab to space
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
+set smartindent
 
 " Status bar
 set laststatus=2
