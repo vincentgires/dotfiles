@@ -5,6 +5,7 @@ set ruler
 set encoding=utf-8
 
 " General
+set background=dark
 syntax on
 set number
 set nowrap
