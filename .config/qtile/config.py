@@ -168,7 +168,7 @@ follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
-    # Run the utility of `xprop` to see the wm class and name of an X client.
+    # Run the xprop utility to see the wm_class and name of an X client
     {'wmclass': 'confirm'},
     {'wmclass': 'dialog'},
     {'wmclass': 'download'},
@@ -192,3 +192,15 @@ focus_on_window_activation = 'smart'
 def autostart():
     # Set keyboard layout with bépo
     os.system('setxkbmap fr bepo')
+
+
+@hook.subscribe.client_new
+def agroup(client):
+    # Run xprop to find wm_class
+    apps = {
+        'Navigator': '2',
+        'qutebrowser': '2'}
+    wm_class = client.window.get_wm_class()[0]
+    group = apps.get(wm_class, None)
+    if group:
+        client.togroup(group, switch_group=True)
