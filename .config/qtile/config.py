@@ -92,19 +92,29 @@ keys = [
     Key([], 'XF86MonBrightnessUp', lazy.spawn('xbacklight -inc 15')),
 ]
 
-groups = [Group(i, layout='monadtall') for i in '123456789']
-for i, group in enumerate(groups):
+group_names = [
+    ('1', 'quotedbl'),
+    ('2', 'guillemotleft'),
+    ('3', 'guillemotright'),
+    ('4', 'parenleft'),
+    ('5', 'parenright'),
+    ('6', 'at'),
+    ('7', 'plus'),
+    ('8', 'minus'),
+    ('9', 'slash'),
+    # ('0', 'asterisk')
+]
+
+groups = [Group(i[0], layout='monadtall') for i in group_names]
+for name, key in group_names:
     keys.extend([
         # Switch to group
-        # TODO use correct key with bépo (str(i) can't work)
-        Key([mod], str(i), lazy.group[group.name].toscreen(),
-            desc='Switch to group {}'.format(group.name)),
-
+        Key([mod], key, lazy.group[name].toscreen(),
+            desc='Switch to group {}'.format(name)),
         # Send current window to another group
-        Key([mod, 'shift'], str(i),
-            lazy.window.togroup(group.name, switch_group=True),
-            desc='Switch and move focused window to group {}'.format(
-                group.name)),
+        Key([mod, 'shift'], key,
+            lazy.window.togroup(name, switch_group=True),
+            desc='Switch and move focused window to group {}'.format(name)),
     ])
 
 layouts = [
