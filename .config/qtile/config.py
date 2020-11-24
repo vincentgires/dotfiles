@@ -63,7 +63,10 @@ keys_assignation = [
 
     # Toggle between different layouts
     ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
+
+    # Close window
     ([mod], 'w', lazy.window.kill(), 'Kill focused window'),
+    ([alt], 'F4', lazy.window.kill(), 'Kill focused window'),
 
     # Qtile session
     ([mod, 'control'], 'r', lazy.restart(), 'Restart qtile'),
