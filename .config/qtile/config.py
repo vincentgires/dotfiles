@@ -28,13 +28,13 @@ keys_assignation = [
         'Move focus right in stack pane'),
 
     # Move windows
-    ([mod, 'shift'], 's', lazy.layout.shuffle_down(),
+    ([mod, 'shift'], ['s', 'Down'], lazy.layout.shuffle_down(),
         'Move window down in current stack '),
-    ([mod, 'shift'], 'r', lazy.layout.shuffle_up(),
+    ([mod, 'shift'], ['r', 'Up'], lazy.layout.shuffle_up(),
         'Move window up in current stack '),
-    ([mod, 'shift'], 't', lazy.layout.shuffle_left(),
+    ([mod, 'shift'], ['t', 'Left'], lazy.layout.shuffle_left(),
         'Move window left in current stack '),
-    ([mod, 'shift'], 'n', lazy.layout.shuffle_right(),
+    ([mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
         'Move window right in current stack '),
 
     # Windows geometry
@@ -53,10 +53,10 @@ keys_assignation = [
     ([mod, 'shift'], 'space', lazy.layout.rotate(),
         'Swap panes of split stack'),
 
-    ## Toggle between split and unsplit sides of stack.
-    ## Split = all windows displayed
-    ## Unsplit = 1 window displayed, like Max layout, but still with
-    ## multiple stack panes
+    # Toggle between split and unsplit sides of stack.
+    # Split = all windows displayed
+    # Unsplit = 1 window displayed, like Max layout, but still with
+    # multiple stack panes
     ([mod, 'shift'], 'Return', lazy.layout.toggle_split(),
         'Toggle between split and unsplit sides of stack'),
     ([mod], 'Return', lazy.spawn(terminal), 'Launch terminal'),
