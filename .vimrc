@@ -40,3 +40,7 @@ set smartcase
 set showmatch
 map <leader><space> :let @/=''<cr> " clear search
 
+noremap c h
+noremap t j
+noremap s k
+noremap r l
