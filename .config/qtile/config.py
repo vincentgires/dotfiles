@@ -9,6 +9,7 @@ mod = 'mod4'
 alt = 'mod1'
 # terminal = guess_terminal()
 terminal = 'st -f hack:size=12'
+browser = 'qutebrowser'
 
 
 def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
@@ -65,8 +66,8 @@ keys_assignation = [
     ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
 
     # Close window
-    ([mod], 'w', lazy.window.kill(), 'Kill focused window'),
-    ([alt], 'F4', lazy.window.kill(), 'Kill focused window'),
+    ([mod], 'c', lazy.window.kill(), 'Close focused window'),
+    ([alt], 'F4', lazy.window.kill(), 'Close focused window'),
 
     # Qtile session
     ([mod, 'control'], 'r', lazy.restart(), 'Restart qtile'),
@@ -83,6 +84,10 @@ keys_assignation = [
         'Move to the group on the left'),
     ([alt, 'control'], 'Right', lazy.screen.next_group(),
         'Move to the group on the right'),
+    ([mod, alt], ['Left', 't', 'r'], lazy.screen.prev_group(),
+        'Move to the group on the left'),
+    ([mod, alt], ['Right', 'n', 's'], lazy.screen.next_group(),
+        'Move to the group on the right'),
 
     # Sound
     ([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle'), ''),
@@ -94,6 +99,9 @@ keys_assignation = [
     # Brightness
     ([], 'XF86MonBrightnessDown', lazy.spawn('xbacklight -dec 15'), ''),
     ([], 'XF86MonBrightnessUp', lazy.spawn('xbacklight -inc 15'), ''),
+
+    # Applications
+    ([mod], 'b', lazy.spawn(browser), ''),
 ]
 
 for modifiers, key, commands, desc in keys_assignation:
@@ -105,21 +113,27 @@ for modifiers, key, commands, desc in keys_assignation:
         keys.append(Key(modifiers, key, *commands, desc=desc))
 
 
-group_names = [
-    ('1', 'quotedbl'),
-    ('2', 'guillemotleft'),
-    ('3', 'guillemotright'),
-    ('4', 'parenleft'),
-    ('5', 'parenright'),
-    ('6', 'at'),
-    ('7', 'plus'),
-    ('8', 'minus'),
-    ('9', 'slash'),
+group_names = {
+    'main': '1: main',
+    'net': '2: net',
+    'dev': '3: dev',
+    'chat': '4: chat',
+    'music': '5: music'}
+group_assignation = [
+    (group_names['main'], 'quotedbl'),
+    (group_names['net'], 'guillemotleft'),
+    (group_names['dev'], 'guillemotright'),
+    (group_names['chat'], 'parenleft'),
+    (group_names['music'], 'parenright'),
+    # ('6', 'at'),
+    # ('7', 'plus'),
+    # ('8', 'minus'),
+    # ('9', 'slash'),
     # ('0', 'asterisk')
 ]
 
-groups = [Group(i[0], layout='monadtall') for i in group_names]
-for name, key in group_names:
+groups = [Group(i[0], layout='monadtall') for i in group_assignation]
+for name, key in group_assignation:
     keys.extend([
         # Switch to group
         Key([mod], key, lazy.group[name].toscreen(),
@@ -130,12 +144,18 @@ for name, key in group_names:
             desc='Switch and move focused window to group {}'.format(name)),
     ])
 
+layout_theme = {
+    'border_width': 1,
+    'margin': 6,
+    'border_focus': 'dimgrey',
+    'border_normal': '313131'}
+
 layouts = [
-    layout.Max(),
-    layout.Columns(),
-    layout.MonadTall(),
-    layout.RatioTile(),
-    layout.Tile()]
+    layout.Max(**layout_theme),
+    layout.TreeTab(**layout_theme),
+    layout.MonadTall(new_at_current=True, **layout_theme),
+    layout.Tile(shift_windows=True, **layout_theme),
+    layout.Floating(**layout_theme)]
 
 widget_defaults = dict(
     font='sans',
@@ -150,16 +170,23 @@ screens = [
         wallpaper_mode='fill',
         top=bar.Bar(
             [
-                widget.CurrentLayout(),
                 widget.GroupBox(),
-                widget.Prompt(),
+                widget.Sep(),
+                widget.CurrentLayout(),
+                # widget.Sep(),
+                # widget.Prompt(),
+                widget.Sep(),
                 widget.WindowName(),
                 widget.Systray(),
                 # widget.KeyboardLayout(),
-                widget.Clock(format='%Y-%m-%d %a %I:%M %p'),
+                widget.Sep(),
+                widget.Clock(format='%Y-%m-%d %H:%M'),
+                # widget.Sep(),
                 # widget.Backlight(),
+                widget.Sep(),
                 widget.Volume(),
-                widget.QuickExit(),
+                widget.Sep(),
+                widget.QuickExit()
             ],
             24,
         ),
@@ -211,8 +238,10 @@ def autostart():
 def agroup(client):
     # Run xprop to find wm_class
     apps = {
-        'Navigator': '2',
-        'qutebrowser': '2'}
+        'Navigator': group_names['net'],
+        'qutebrowser': group_names['net'],
+        'kdevelop': group_names['dev'],
+        'element': group_names['chat']}
     wm_class = client.window.get_wm_class()[0]
     group = apps.get(wm_class, None)
     if group:
