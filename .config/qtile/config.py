@@ -7,8 +7,10 @@ from libqtile.utils import guess_terminal
 keys = []
 mod = 'mod4'
 alt = 'mod1'
+# altgr = 'mod5'
 # terminal = guess_terminal()
-terminal = 'st -f hack:size=12'
+# terminal = 'st -f hack:size=12'
+terminal = 'alacritty'
 browser = 'qutebrowser'
 
 
@@ -16,7 +18,7 @@ def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
     for k in key:
         keys.append(Key(modifiers, k, *commands, desc=desc))
 
-
+# Run the xev utility to see the key code
 keys_assignation = [
     # Switch between windows
     ([mod], ['s', 'Down'], lazy.layout.down(),
@@ -45,6 +47,7 @@ keys_assignation = [
         'Expand window (MonadTall), increase number in master pane (Tile)'),
     ([mod], 'v', lazy.layout.maximize(), 'Maximize'),
     ([mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
+    ([mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
 
     # Switch window focus to other pane(s) of stack
     ([mod], 'space', lazy.layout.next(),
@@ -118,14 +121,15 @@ group_names = {
     'net': '2: net',
     'dev': '3: dev',
     'chat': '4: chat',
-    'music': '5: music'}
+    'music': '5: music',
+    'work': '6: work'}
 group_assignation = [
     (group_names['main'], 'quotedbl'),
     (group_names['net'], 'guillemotleft'),
     (group_names['dev'], 'guillemotright'),
     (group_names['chat'], 'parenleft'),
     (group_names['music'], 'parenright'),
-    # ('6', 'at'),
+    (group_names['work'], 'at'),
     # ('7', 'plus'),
     # ('8', 'minus'),
     # ('9', 'slash'),
@@ -166,7 +170,7 @@ extension_defaults = widget_defaults.copy()
 
 screens = [
     Screen(
-        wallpaper='~/Pictures/wallpaper_vignetting_noise.png',
+        wallpaper='~/wallpaper.png',
         wallpaper_mode='fill',
         top=bar.Bar(
             [
