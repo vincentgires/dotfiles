@@ -1,6 +1,7 @@
 import os
 from libqtile import bar, layout, widget, hook
-from libqtile.config import Click, Drag, Group, Key, Screen
+from libqtile.config import (
+    Click, Drag, Group, Key, Screen, ScratchPad, DropDown)
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
@@ -12,11 +13,13 @@ alt = 'mod1'
 # terminal = 'st -f hack:size=12'
 terminal = 'alacritty'
 browser = 'qutebrowser'
+audioplayer = 'audacious'
 
 
 def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
     for k in key:
         keys.append(Key(modifiers, k, *commands, desc=desc))
+
 
 # Run the xev utility to see the key code
 keys_assignation = [
@@ -39,6 +42,10 @@ keys_assignation = [
         'Move window left in current stack '),
     ([mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
         'Move window right in current stack '),
+
+    # Flip
+    ([mod], 'q', lazy.layout.flip(),
+        'Flip pane'),
 
     # Windows geometry
     ([mod], 'd', [lazy.layout.shrink(), lazy.layout.decrease_nmaster()],
@@ -147,6 +154,17 @@ for name, key in group_assignation:
             lazy.window.togroup(name, switch_group=True),
             desc='Switch and move focused window to group {}'.format(name)),
     ])
+
+# Dropdown
+groups.extend([
+    ScratchPad('scratchpad', [
+        DropDown('terminal', terminal),
+        DropDown('audioplayer', audioplayer)])
+])
+keys.extend([
+  Key([], 'F11', lazy.group['scratchpad'].dropdown_toggle('terminal')),
+  Key([], 'F10', lazy.group['scratchpad'].dropdown_toggle('audioplayer')),
+])
 
 layout_theme = {
     'border_width': 1,
