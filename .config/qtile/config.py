@@ -1,4 +1,5 @@
 import os
+import shutil
 from libqtile import bar, layout, widget, hook
 from libqtile.config import (
     Click, Drag, Group, Key, Screen, ScratchPad, DropDown)
@@ -10,10 +11,12 @@ mod = 'mod4'
 alt = 'mod1'
 # altgr = 'mod5'
 # terminal = guess_terminal()
-# terminal = 'st -f hack:size=12'
 terminal = 'alacritty'
-browser = 'qutebrowser'
-audioplayer = 'audacious'
+browser = shutil.which('qutebrowser') or shutil.which('firefox')
+audioplayer = (
+    shutil.which('audacious')
+    or shutil.which('deadbeef')
+    or shutil.which('vlc'))
 
 
 def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
@@ -35,13 +38,26 @@ keys_assignation = [
 
     # Move windows
     ([mod, 'shift'], ['s', 'Down'], lazy.layout.shuffle_down(),
-        'Move window down in current stack '),
+        'Move window down in current stack'),
     ([mod, 'shift'], ['r', 'Up'], lazy.layout.shuffle_up(),
-        'Move window up in current stack '),
+        'Move window up in current stack'),
     ([mod, 'shift'], ['t', 'Left'], lazy.layout.shuffle_left(),
-        'Move window left in current stack '),
+        'Move window left in current stack'),
     ([mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
-        'Move window right in current stack '),
+        'Move window right in current stack'),
+
+    # ([mod, 'control', 'shift'], ['s', 'Down'],
+    #     lazy.window.move_floating(0, 15),
+    #     'Move floating window down'),
+    # ([mod, 'control', 'shift'], ['r', 'Up'],
+    #     lazy.window.move_floating(0, -15),
+    #     'Move floating window up'),
+    # ([mod, 'control', 'shift'], ['t', 'Left'],
+    #     lazy.window.move_floating(-15, 0),
+    #     'Move floating window left'),
+    # ([mod, 'control', 'shift'], ['n', 'Right'],
+    #     lazy.window.move_floating(15, 0),
+    #     'Move floating window right'),
 
     # Flip
     ([mod], 'q', lazy.layout.flip(),
@@ -80,7 +96,7 @@ keys_assignation = [
     ([alt], 'F4', lazy.window.kill(), 'Close focused window'),
 
     # Qtile session
-    ([mod, 'control'], 'r', lazy.restart(), 'Restart qtile'),
+    ([mod, 'control'], 'o', lazy.restart(), 'Restart qtile'),
     ([mod, 'control'], 'q', lazy.shutdown(), 'Shutdown qtile'),
 
     # Run prompt
@@ -90,13 +106,9 @@ keys_assignation = [
         'Spawn a command using a prompt widget'),
 
     # Switch between groups
-    ([alt, 'control'], 'Left', lazy.screen.prev_group(),
+    ([mod, 'control'], ['Left', 't', 'r'], lazy.screen.prev_group(),
         'Move to the group on the left'),
-    ([alt, 'control'], 'Right', lazy.screen.next_group(),
-        'Move to the group on the right'),
-    ([mod, alt], ['Left', 't', 'r'], lazy.screen.prev_group(),
-        'Move to the group on the left'),
-    ([mod, alt], ['Right', 'n', 's'], lazy.screen.next_group(),
+    ([mod, 'control'], ['Right', 'n', 's'], lazy.screen.next_group(),
         'Move to the group on the right'),
 
     # Sound
@@ -124,12 +136,12 @@ for modifiers, key, commands, desc in keys_assignation:
 
 
 group_names = {
-    'main': '1: main',
-    'net': '2: net',
-    'dev': '3: dev',
-    'chat': '4: chat',
-    'music': '5: music',
-    'work': '6: work'}
+    'main': 'main',
+    'net': 'net',
+    'dev': 'dev',
+    'chat': 'chat',
+    'music': 'music',
+    'work': 'work'}
 group_assignation = [
     (group_names['main'], 'quotedbl'),
     (group_names['net'], 'guillemotleft'),
@@ -182,9 +194,15 @@ layouts = [
 widget_defaults = dict(
     font='sans',
     fontsize=12,
-    padding=3,
-)
+    padding=3)
 extension_defaults = widget_defaults.copy()
+
+graph_theme = {
+    'border_color': '333333',
+    'border_width': 1,
+    'graph_color': '333333',
+    'line_width': 1,
+    'fill_color': '555555'}
 
 screens = [
     Screen(
@@ -192,7 +210,12 @@ screens = [
         wallpaper_mode='fill',
         top=bar.Bar(
             [
-                widget.GroupBox(),
+                widget.GroupBox(
+                    borderwidth=2,
+                    highlight_method='line',
+                    # rounded=False,
+                    highlight_color=['000000', '000000'],
+                    this_current_screen_border='555555'),
                 widget.Sep(),
                 widget.CurrentLayout(),
                 # widget.Sep(),
@@ -201,14 +224,19 @@ screens = [
                 widget.WindowName(),
                 widget.Systray(),
                 # widget.KeyboardLayout(),
-                widget.Sep(),
-                widget.Clock(format='%Y-%m-%d %H:%M'),
                 # widget.Sep(),
                 # widget.Backlight(),
                 widget.Sep(),
+                widget.CPUGraph(**graph_theme),
+                widget.MemoryGraph(**graph_theme),
+                widget.SwapGraph(**graph_theme),
+                widget.Sep(),
+                widget.TextBox(text='🔊'),
                 widget.Volume(),
                 widget.Sep(),
-                widget.QuickExit()
+                widget.Clock(format='%Y-%m-%d %H:%M'),
+                widget.Sep(),
+                widget.QuickExit(default_text='🗙', countdown_format='{}'),
             ],
             24,
         ),
@@ -256,15 +284,15 @@ def autostart():
     os.system('setxkbmap fr bepo')
 
 
-@hook.subscribe.client_new
-def agroup(client):
-    # Run xprop to find wm_class
-    apps = {
-        'Navigator': group_names['net'],
-        'qutebrowser': group_names['net'],
-        'kdevelop': group_names['dev'],
-        'element': group_names['chat']}
-    wm_class = client.window.get_wm_class()[0]
-    group = apps.get(wm_class, None)
-    if group:
-        client.togroup(group, switch_group=True)
+# @hook.subscribe.client_new
+# def agroup(client):
+#     # Run xprop to find wm_class
+#     apps = {
+#         'Navigator': group_names['net'],
+#         'qutebrowser': group_names['net'],
+#         'kdevelop': group_names['dev'],
+#         'element': group_names['chat']}
+#     wm_class = client.window.get_wm_class()[0]
+#     group = apps.get(wm_class, None)
+#     if group:
+#         client.togroup(group, switch_group=True)
