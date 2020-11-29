@@ -124,6 +124,24 @@ keys_assignation = [
 
     # Applications
     ([mod], 'b', lazy.spawn(browser), ''),
+
+    # Screens
+    # Switch focus of monitors
+    ([mod, 'control'], 'quotedbl', lazy.to_screen(0),
+        'Set focus to monitor 1'),
+    ([mod, 'control'], 'guillemotleft', lazy.to_screen(1),
+        'Set focus to monitor 2'),
+    ([mod], 'g', lazy.next_screen(), 'Set focus to next monitor'),
+    ([mod], 'h', lazy.prev_screen(), 'Set focus to prev monitor'),
+    # Move to specific monitor
+    ([mod, 'control', 'shift'], 'quotedbl',
+        [lazy.window.toscreen(0),
+         lazy.to_screen(0)],
+        'Move to monitor 1'),
+    ([mod, 'control', 'shift'], 'guillemotleft',
+        [lazy.window.toscreen(1),
+         lazy.to_screen(1)],
+        'Move to monitor 2'),
 ]
 
 for modifiers, key, commands, desc in keys_assignation:
@@ -204,18 +222,22 @@ graph_theme = {
     'line_width': 1,
     'fill_color': '555555'}
 
+
+def create_groupbox():
+    return widget.GroupBox(
+        borderwidth=2,
+        highlight_method='line',
+        highlight_color=['000000', '000000'],
+        this_current_screen_border='555555')
+
+
 screens = [
     Screen(
         wallpaper='~/wallpaper.png',
         wallpaper_mode='fill',
         top=bar.Bar(
             [
-                widget.GroupBox(
-                    borderwidth=2,
-                    highlight_method='line',
-                    # rounded=False,
-                    highlight_color=['000000', '000000'],
-                    this_current_screen_border='555555'),
+                create_groupbox(),
                 widget.Sep(),
                 widget.CurrentLayout(),
                 # widget.Sep(),
@@ -237,6 +259,20 @@ screens = [
                 widget.Clock(format='%Y-%m-%d %H:%M'),
                 widget.Sep(),
                 widget.QuickExit(default_text='🗙', countdown_format='{}'),
+            ],
+            24,
+        ),
+    ),
+    Screen(
+        wallpaper='~/wallpaper.png',
+        wallpaper_mode='fill',
+        top=bar.Bar(
+            [
+                create_groupbox(),
+                widget.Sep(),
+                widget.CurrentLayout(),
+                widget.Sep(),
+                widget.WindowName(),
             ],
             24,
         ),
