@@ -5,6 +5,7 @@ from libqtile.config import (
     Click, Drag, Group, Key, Screen, ScratchPad, DropDown)
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
+# import psutil
 
 wmname = 'Qtile'
 keys = []
@@ -174,7 +175,8 @@ group_names = {
     'work': 'work'}
 group_assignation = [
     (group_names['main'], 'quotedbl', {'layout': 'monadtall'}),
-    (group_names['net'], 'guillemotleft', {'layout': 'monadtall'}),
+    (group_names['net'], 'guillemotleft',
+        {'layout': 'monadtall', 'matches': [Match(wm_class=['firefox'])]}),
     (group_names['dev'], 'guillemotright', {'layout': 'monadtall'}),
     (group_names['chat'], 'parenleft', {'layout': 'monadtall'}),
     (group_names['music'], 'parenright', {'layout': 'monadtall'}),
@@ -208,6 +210,9 @@ keys.extend([
   Key([], 'F10', lazy.group['scratchpad'].dropdown_toggle('audioplayer')),
 ])
 
+active_color = '555555'
+inactive_color = '404040'
+
 layout_theme = {
     'border_width': 1,
     'margin': 6,
@@ -216,7 +221,17 @@ layout_theme = {
 
 layouts = [
     layout.Max(**layout_theme),
-    layout.TreeTab(**layout_theme),
+    layout.TreeTab(
+        **layout_theme,
+        fontsize=12,
+        sections=['tab'],
+        section_fontsize=12,
+        bg_color='131313',
+        active_bg=active_color,
+        active_fg='ffffff',
+        inactive_bg='131313',
+        inactive_fg=inactive_color,
+        panel_width=150),
     layout.MonadTall(new_at_current=True, **layout_theme),
     layout.Bsp(**layout_theme),
     layout.Tile(shift_windows=True, **layout_theme, master_length=3),
@@ -228,7 +243,6 @@ widget_defaults = dict(
     padding=3)
 extension_defaults = widget_defaults.copy()
 
-active_color = '555555'
 graph_theme = {
     'border_color': '333333',
     'border_width': 1,
@@ -242,7 +256,8 @@ def create_groupbox():
         borderwidth=2,
         highlight_method='line',
         highlight_color=['000000', '000000'],
-        this_current_screen_border=active_color)
+        this_current_screen_border=active_color,
+        inactive=inactive_color)
 
 
 screens = [
@@ -256,14 +271,14 @@ screens = [
                 widget.CurrentLayout(),
                 # widget.Sep(),
                 # widget.Prompt(),
-                # widget.Sep(),
-                # widget.WindowName(),
                 widget.Sep(),
-                widget.TaskList(
-                    border=active_color,
-                    borderwidth=1,
-                    highlight_method='block',
-                    max_title_width=250),
+                widget.WindowName(),
+                # widget.Sep(),
+                # widget.TaskList(
+                #     border=active_color,
+                #     borderwidth=1,
+                #     highlight_method='block',
+                #     max_title_width=250),
                 widget.Systray(),
                 # widget.KeyboardLayout(),
                 # widget.Sep(),
@@ -353,3 +368,28 @@ def autostart():
 #     group = apps.get(wm_class, None)
 #     if group:
 #         client.togroup(group, switch_group=True)
+
+
+# Swallow feature borrowed from https://github.com/qtile/qtile/issues/1771
+# @hook.subscribe.client_new
+# def _swallow(window):
+#     pid = window.window.get_net_wm_pid()
+#     ppid = psutil.Process(pid).ppid()
+#     cpids = {
+#         c.window.get_net_wm_pid(): wid
+#         for wid, c in window.qtile.windows_map.items()}
+#     for i in range(5):
+#         if not ppid:
+#             return
+#         if ppid in cpids:
+#             parent = window.qtile.windows_map.get(cpids[ppid])
+#             parent.minimized = True
+#             window.parent = parent
+#             return
+#         ppid = psutil.Process(ppid).ppid()
+
+
+# @hook.subscribe.client_killed
+# def _unswallow(window):
+#     if hasattr(window, 'parent'):
+#         window.parent.minimized = False
