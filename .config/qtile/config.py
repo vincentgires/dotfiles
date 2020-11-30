@@ -6,17 +6,22 @@ from libqtile.config import (
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 
+wmname = 'Qtile'
 keys = []
 mod = 'mod4'
 alt = 'mod1'
 # altgr = 'mod5'
 # terminal = guess_terminal()
-terminal = 'alacritty'
+terminal = (
+    shutil.which('alacritty')
+    or shutil.which('st')
+    or shutil.which('xfce4-terminal'))
 browser = shutil.which('qutebrowser') or shutil.which('firefox')
 audioplayer = (
     shutil.which('audacious')
     or shutil.which('deadbeef')
     or shutil.which('vlc'))
+filemanager = shutil.which('thunar')
 
 
 def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
@@ -64,13 +69,19 @@ keys_assignation = [
         'Flip pane'),
 
     # Windows geometry
+    ([mod], 'v', lazy.layout.maximize(), 'Maximize'),
+    ([mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
+    # MonadTall specific
     ([mod], 'd', [lazy.layout.shrink(), lazy.layout.decrease_nmaster()],
         'Shrink window (MonadTall), decrease number in master pane (Tile)'),
     ([mod], 'l', [lazy.layout.grow(), lazy.layout.increase_nmaster()],
         'Expand window (MonadTall), increase number in master pane (Tile)'),
-    ([mod], 'v', lazy.layout.maximize(), 'Maximize'),
-    ([mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
     ([mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
+    # Bsp specific
+    # ([mod], 'd', lazy.layout.grow_down(), 'Grow down'),
+    # ([mod], 'l', lazy.layout.grow_up(), 'Grow up'),
+    # ([mod], 'v', lazy.layout.grow_left(), 'Grow left'),
+    # ([mod], 'j', lazy.layout.grow_right(), 'Grow right'),
 
     # Switch window focus to other pane(s) of stack
     ([mod], 'space', lazy.layout.next(),
@@ -92,7 +103,7 @@ keys_assignation = [
     ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
 
     # Close window
-    ([mod], 'c', lazy.window.kill(), 'Close focused window'),
+    ([mod], ['c', 'eacute'], lazy.window.kill(), 'Close focused window'),
     ([alt], 'F4', lazy.window.kill(), 'Close focused window'),
 
     # Qtile session
@@ -100,10 +111,10 @@ keys_assignation = [
     ([mod, 'control'], 'q', lazy.shutdown(), 'Shutdown qtile'),
 
     # Run prompt
-    # ([alt], 'space', lazy.spawncmd(),
+    # ([mod], 'x', lazy.spawncmd(),
     #     'Spawn a command using a prompt widget'),
     ([alt], 'space', lazy.spawn('dmenu_run -p Run: -l 5 -sb dimgrey'),
-        'Spawn a command using a prompt widget'),
+        'Spawn a command using dmenu'),
 
     # Switch between groups
     ([mod, 'control'], ['Left', 't', 'r'], lazy.screen.prev_group(),
@@ -124,6 +135,7 @@ keys_assignation = [
 
     # Applications
     ([mod], 'b', lazy.spawn(browser), ''),
+    ([mod], 'dollar', lazy.spawn(filemanager), ''),
 
     # Screens
     # Switch focus of monitors
@@ -161,20 +173,20 @@ group_names = {
     'music': 'music',
     'work': 'work'}
 group_assignation = [
-    (group_names['main'], 'quotedbl'),
-    (group_names['net'], 'guillemotleft'),
-    (group_names['dev'], 'guillemotright'),
-    (group_names['chat'], 'parenleft'),
-    (group_names['music'], 'parenright'),
-    (group_names['work'], 'at'),
+    (group_names['main'], 'quotedbl', {'layout': 'monadtall'}),
+    (group_names['net'], 'guillemotleft', {'layout': 'monadtall'}),
+    (group_names['dev'], 'guillemotright', {'layout': 'monadtall'}),
+    (group_names['chat'], 'parenleft', {'layout': 'monadtall'}),
+    (group_names['music'], 'parenright', {'layout': 'monadtall'}),
+    (group_names['work'], 'at', {'layout': 'max'}),
     # ('7', 'plus'),
     # ('8', 'minus'),
     # ('9', 'slash'),
     # ('0', 'asterisk')
 ]
 
-groups = [Group(i[0], layout='monadtall') for i in group_assignation]
-for name, key in group_assignation:
+groups = [Group(name, **kwargs) for name, _, kwargs in group_assignation]
+for name, key, _ in group_assignation:
     keys.extend([
         # Switch to group
         Key([mod], key, lazy.group[name].toscreen(),
@@ -206,7 +218,8 @@ layouts = [
     layout.Max(**layout_theme),
     layout.TreeTab(**layout_theme),
     layout.MonadTall(new_at_current=True, **layout_theme),
-    layout.Tile(shift_windows=True, **layout_theme),
+    layout.Bsp(**layout_theme),
+    layout.Tile(shift_windows=True, **layout_theme, master_length=3),
     layout.Floating(**layout_theme)]
 
 widget_defaults = dict(
@@ -215,12 +228,13 @@ widget_defaults = dict(
     padding=3)
 extension_defaults = widget_defaults.copy()
 
+active_color = '555555'
 graph_theme = {
     'border_color': '333333',
     'border_width': 1,
     'graph_color': '333333',
     'line_width': 1,
-    'fill_color': '555555'}
+    'fill_color': active_color}
 
 
 def create_groupbox():
@@ -228,7 +242,7 @@ def create_groupbox():
         borderwidth=2,
         highlight_method='line',
         highlight_color=['000000', '000000'],
-        this_current_screen_border='555555')
+        this_current_screen_border=active_color)
 
 
 screens = [
@@ -242,8 +256,14 @@ screens = [
                 widget.CurrentLayout(),
                 # widget.Sep(),
                 # widget.Prompt(),
+                # widget.Sep(),
+                # widget.WindowName(),
                 widget.Sep(),
-                widget.WindowName(),
+                widget.TaskList(
+                    border=active_color,
+                    borderwidth=1,
+                    highlight_method='block',
+                    max_title_width=250),
                 widget.Systray(),
                 # widget.KeyboardLayout(),
                 # widget.Sep(),
@@ -260,7 +280,8 @@ screens = [
                 widget.Sep(),
                 widget.QuickExit(default_text='🗙', countdown_format='{}'),
             ],
-            24,
+            25,
+            background='131313'
         ),
     ),
     Screen(
@@ -274,7 +295,7 @@ screens = [
                 widget.Sep(),
                 widget.WindowName(),
             ],
-            24,
+            25,
         ),
     ),
 ]
