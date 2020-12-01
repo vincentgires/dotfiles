@@ -2,7 +2,7 @@ import os
 import shutil
 from libqtile import bar, layout, widget, hook
 from libqtile.config import (
-    Click, Drag, Group, Key, Screen, ScratchPad, DropDown)
+    Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown)
 from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 # import psutil
@@ -72,12 +72,17 @@ keys_assignation = [
     # Windows geometry
     ([mod], 'v', lazy.layout.maximize(), 'Maximize'),
     ([mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
-    # MonadTall specific
+    ([mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
+    # MonadTall and Tile specific
     ([mod], 'd', [lazy.layout.shrink(), lazy.layout.decrease_nmaster()],
         'Shrink window (MonadTall), decrease number in master pane (Tile)'),
     ([mod], 'l', [lazy.layout.grow(), lazy.layout.increase_nmaster()],
         'Expand window (MonadTall), increase number in master pane (Tile)'),
-    ([mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
+    # Tile specific
+    ([mod], 'v', lazy.layout.decrease_ratio(),
+        'Decrease ratio (Tile)'),
+    ([mod], 'j', lazy.layout.increase_ratio(),
+        'Increase ratio (Tile)'),
     # Bsp specific
     # ([mod], 'd', lazy.layout.grow_down(), 'Grow down'),
     # ([mod], 'l', lazy.layout.grow_up(), 'Grow up'),
@@ -177,7 +182,8 @@ group_assignation = [
     (group_names['main'], 'quotedbl', {'layout': 'monadtall'}),
     (group_names['net'], 'guillemotleft',
         {'layout': 'monadtall', 'matches': [Match(wm_class=['firefox'])]}),
-    (group_names['dev'], 'guillemotright', {'layout': 'monadtall'}),
+    (group_names['dev'], 'guillemotright',
+        {'layout': 'monadtall', 'matches': [Match(wm_class=['kdevelop'])]}),
     (group_names['chat'], 'parenleft', {'layout': 'monadtall'}),
     (group_names['music'], 'parenright', {'layout': 'monadtall'}),
     (group_names['work'], 'at', {'layout': 'max'}),
@@ -234,7 +240,7 @@ layouts = [
         panel_width=150),
     layout.MonadTall(new_at_current=True, **layout_theme),
     layout.Bsp(**layout_theme),
-    layout.Tile(shift_windows=True, **layout_theme, master_length=3),
+    layout.Tile(shift_windows=True, **layout_theme),
     layout.Floating(**layout_theme)]
 
 widget_defaults = dict(
