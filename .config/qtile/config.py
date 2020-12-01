@@ -206,10 +206,15 @@ for name, key, _ in group_assignation:
     ])
 
 # Dropdown
+dropdowm_config = {
+    'height': 0.7,
+    'width': 0.7,
+    'on_focus_lost_hide': True,
+    'warp_pointer': False}
 groups.extend([
     ScratchPad('scratchpad', [
-        DropDown('terminal', terminal),
-        DropDown('audioplayer', audioplayer)])
+        DropDown('terminal', terminal, **dropdowm_config),
+        DropDown('audioplayer', audioplayer, **dropdowm_config)])
 ])
 keys.extend([
   Key([], 'F11', lazy.group['scratchpad'].dropdown_toggle('terminal')),
