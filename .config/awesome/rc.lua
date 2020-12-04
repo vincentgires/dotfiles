@@ -105,6 +105,11 @@ local volume_widget = wibox.widget{
   valign = 'center',
   widget = wibox.widget.textbox}
 
+-- Create separator widget
+local separator_widget = wibox.widget{
+  markup = ' | ',
+  widget = wibox.widget.textbox}
+
 function volume_widget:update()
   local get_volume_cmd = "amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }'"
   awful.spawn.easy_async_with_shell(get_volume_cmd, function(out)
@@ -221,8 +226,11 @@ awful.screen.connect_for_each_screen(function(s)
       layout = wibox.layout.fixed.horizontal,
       keyboard_layout,
       wibox.widget.systray(),
+      separator_widget,
       textclock_widget,
+      separator_widget,
       volume_widget,
+      separator_widget,
       s.layoutbox_widget
     },
   }
