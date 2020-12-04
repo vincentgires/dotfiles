@@ -129,11 +129,14 @@ keys_assignation = [
         'Move to the group on the right'),
 
     # Sound
-    ([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle'), ''),
+    ([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle'),
+        'Mute sound'),
     ([], 'XF86AudioLowerVolume',
-        lazy.spawn('amixer -c 0 sset Master 1- unmute'), ''),
+        lazy.spawn('amixer -c 0 sset Master 1- unmute'),
+        'Lower volume'),
     ([], 'XF86AudioRaiseVolume',
-        lazy.spawn('amixer -c 0 sset Master 1+ unmute'), ''),
+        lazy.spawn('amixer -c 0 sset Master 1+ unmute'),
+        'Raise volume'),
 
     # Brightness
     ([], 'XF86MonBrightnessDown', lazy.spawn('xbacklight -dec 15'), ''),
