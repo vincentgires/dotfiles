@@ -101,7 +101,7 @@ local textclock_widget = wibox.widget.textclock('%Y-%m-%d %H:%M')
 -- Create volume widget
 local volume_widget = wibox.widget{
   markup = 'volume',
-  align  = 'center',
+  align = 'center',
   valign = 'center',
   widget = wibox.widget.textbox}
 
@@ -638,6 +638,15 @@ end)
 client.connect_signal('focus', function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal('unfocus', function(c) c.border_color = beautiful.border_normal end)
 -- }}}
+
+-- Timer update
+gears.timer{
+  timeout = 5,
+  autostart = true,
+  callback = function()
+    volume_widget:update()
+  end
+}
 
 -- Startup
 volume_widget:update()
