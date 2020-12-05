@@ -107,6 +107,7 @@ keys_assignation = [
 
     # Toggle between different layouts
     ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
+    ([mod, 'shift'], 'Tab', lazy.prev_layout(), 'Toggle between layouts'),
 
     # Close window
     ([mod], ['c', 'eacute'], lazy.window.kill(), 'Close focused window'),
@@ -182,13 +183,13 @@ group_names = {
     'music': 'music',
     'work': 'work'}
 group_assignation = [
-    (group_names['main'], 'quotedbl', {'layout': 'monadtall'}),
+    (group_names['main'], 'quotedbl', {'layout': 'tile'}),
     (group_names['net'], 'guillemotleft',
-        {'layout': 'monadtall', 'matches': [Match(wm_class=['firefox'])]}),
+        {'layout': 'tile', 'matches': [Match(wm_class=['firefox'])]}),
     (group_names['dev'], 'guillemotright',
-        {'layout': 'monadtall', 'matches': [Match(wm_class=['kdevelop'])]}),
-    (group_names['chat'], 'parenleft', {'layout': 'monadtall'}),
-    (group_names['music'], 'parenright', {'layout': 'monadtall'}),
+        {'layout': 'tile', 'matches': [Match(wm_class=['kdevelop'])]}),
+    (group_names['chat'], 'parenleft', {'layout': 'tile'}),
+    (group_names['music'], 'parenright', {'layout': 'tile'}),
     (group_names['work'], 'at', {'layout': 'max'}),
     # ('7', 'plus'),
     # ('8', 'minus'),
@@ -234,6 +235,8 @@ layout_theme = {
     'border_normal': '313131'}
 
 layouts = [
+    layout.Tile(shift_windows=True, **layout_theme),
+    layout.MonadTall(new_at_current=True, **layout_theme),
     layout.Max(**layout_theme),
     layout.TreeTab(
         **layout_theme,
@@ -246,9 +249,6 @@ layouts = [
         inactive_bg='131313',
         inactive_fg=inactive_color,
         panel_width=150),
-    layout.MonadTall(new_at_current=True, **layout_theme),
-    layout.Bsp(**layout_theme),
-    layout.Tile(shift_windows=True, **layout_theme),
     layout.Floating(**layout_theme)]
 
 widget_defaults = dict(
