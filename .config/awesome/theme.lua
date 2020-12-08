@@ -27,14 +27,12 @@ theme.border_normal = '#222222'
 theme.border_focus = '#555555'
 theme.border_marked = '#91231c'
 
--- Generate taglist squares:
-local taglist_square_size = dpi(4)
-theme.taglist_squares_sel = theme_assets.taglist_squares_sel(
-  taglist_square_size, theme.fg_normal
-)
-theme.taglist_squares_unsel = theme_assets.taglist_squares_unsel(
-  taglist_square_size, theme.fg_normal
-)
+
+theme.taglist_fg_focus    = '#d5d5d5'
+theme.taglist_fg_occupied = '#d5d5d5'
+theme.taglist_fg_urgent   = '#db716b'
+theme.taglist_fg_empty    = '#666666'
+theme.taglist_spacing     = 2
 
 theme.menu_submenu_icon = themes_path .. 'default/submenu.png'
 theme.menu_height = dpi(18)
