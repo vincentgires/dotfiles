@@ -314,6 +314,12 @@ local globalkeys = gears.table.join(
     {modkey}, 't', function() awful.tag.incmwfact(-0.05) end,
     {description = 'decrease master width factor', group = 'layout'}),
   awful.key(
+    {modkey}, 'l', function() awful.client.incwfact(0.05) end,
+    {description = 'increase master width factor', group = 'layout'}),
+  awful.key(
+    {modkey}, 'd', function() awful.client.incwfact(-0.05) end,
+    {description = 'decrease master width factor', group = 'layout'}),
+  awful.key(
     {modkey, 'Shift'}, 't', function() awful.tag.incnmaster(1, nil, true) end,
     {description = 'increase the number of master clients', group = 'layout'}),
   awful.key(
