@@ -1,0 +1,37 @@
+# List of modifier:
+#   Release, Control, Shift, Mod1 (Alt), Mod2 (NumLock),
+#   Mod3 (CapsLock), Mod4, Mod5 (Scroll).
+
+# keystate_numlock = enable
+# keystate_capslock = enable
+# keystate_scrolllock= enable
+
+"dmenu_run -p Run: -l 5 -sb dimgrey"
+  mod1 + space
+
+"alacritty"
+  mod4 + Return
+
+"thunar"
+  mod4 + dollar
+
+# mute sound
+"amixer -q set Master toggle"
+  XF86AudioMute
+
+# lower volume
+"amixer -c 0 sset Master 1- unmute"
+  XF86AudioLowerVolume
+
+# raise volume
+"amixer -c 0 sset Master 1+ unmute"
+  XF86AudioRaiseVolume
+
+"xbacklight -dec 15"
+  XF86MonBrightnessDown
+
+"xbacklight -inc 15"
+  XF86MonBrightnessUp
+
+"firefox"
+  mod4 + b

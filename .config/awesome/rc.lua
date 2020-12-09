@@ -297,9 +297,9 @@ local globalkeys = gears.table.join(
     {description = 'go back', group = 'client'}),
 
   -- Standard program
-  awful.key(
-    {modkey}, 'Return', function() awful.spawn(terminal) end,
-    {description = 'open a terminal', group = 'launcher'}),
+  -- awful.key(
+  --   {modkey}, 'Return', function() awful.spawn(terminal) end,
+  --   {description = 'open a terminal', group = 'launcher'}),
   awful.key(
     {modkey, 'Control'}, 'o', awesome.restart,
     {description = 'reload awesome', group = 'awesome'}),
@@ -339,10 +339,10 @@ local globalkeys = gears.table.join(
     {description = 'select previous', group = 'layout'}),
 
   -- Prompt
-  awful.key(
+  -- awful.key(
     -- {altkey}, 'r', function() awful.screen.focused().prompt_box:run() end,
-    {altkey}, 'space', function() awful.spawn('dmenu_run -p Run: -l 5 -sb dimgrey') end,
-    {description = 'run prompt', group = 'launcher'}),
+    -- {altkey}, 'space', function() awful.spawn('dmenu_run -p Run: -l 5 -sb dimgrey') end,
+    -- {description = 'run prompt', group = 'launcher'}),
   awful.key(
     {modkey}, 'x',
     function()
@@ -357,38 +357,38 @@ local globalkeys = gears.table.join(
   -- Menubar
   awful.key(
     {modkey}, 'p', function() menubar.show() end,
-    {description = 'show the menubar', group = 'launcher'}),
+    {description = 'show the menubar', group = 'launcher'})
 
   -- Sound volume
-  awful.key(
-    {}, 'XF86AudioMute',
-    function()
-      awful.spawn.with_shell('amixer -q set Master toggle')
-      volume_widget:update()
-    end,
-    {description = 'mute sound', group = 'sound'}),
-  awful.key(
-    {}, 'XF86AudioLowerVolume',
-    function()
-      awful.spawn.with_shell('amixer -c 0 sset Master 1- unmute')
-      volume_widget:update()
-    end,
-    {description = 'lower volume', group = 'sound'}),
-  awful.key(
-    {}, 'XF86AudioRaiseVolume',
-    function()
-      awful.spawn.with_shell('amixer -c 0 sset Master 1+ unmute')
-      volume_widget:update()
-    end,
-    {description = 'raise volume', group = 'sound'}),
-
-  -- Screen brightness
-  awful.key(
-    {}, 'XF86MonBrightnessDown', function() awful.spawn.with_shell('xbacklight -dec 15') end,
-    {description = 'lower brightness', group = 'sound'}),
-  awful.key(
-    {}, 'XF86MonBrightnessUp', function() awful.spawn.with_shell('xbacklight -inc 15') end,
-    {description = 'raise brightness', group = 'sound'})
+  -- awful.key(
+  --   {}, 'XF86AudioMute',
+  --   function()
+  --     awful.spawn.with_shell('amixer -q set Master toggle')
+  --     volume_widget:update()
+  --   end,
+  --   {description = 'mute sound', group = 'sound'}),
+  -- awful.key(
+  --   {}, 'XF86AudioLowerVolume',
+  --   function()
+  --     awful.spawn.with_shell('amixer -c 0 sset Master 1- unmute')
+  --     volume_widget:update()
+  --   end,
+  --   {description = 'lower volume', group = 'sound'}),
+  -- awful.key(
+  --   {}, 'XF86AudioRaiseVolume',
+  --   function()
+  --     awful.spawn.with_shell('amixer -c 0 sset Master 1+ unmute')
+  --     volume_widget:update()
+  --   end,
+  --   {description = 'raise volume', group = 'sound'}),
+  --
+  -- -- Screen brightness
+  -- awful.key(
+  --   {}, 'XF86MonBrightnessDown', function() awful.spawn.with_shell('xbacklight -dec 15') end,
+  --   {description = 'lower brightness', group = 'sound'}),
+  -- awful.key(
+  --   {}, 'XF86MonBrightnessUp', function() awful.spawn.with_shell('xbacklight -inc 15') end,
+  --   {description = 'raise brightness', group = 'sound'})
 )
 
 local clientkeys = gears.table.join(

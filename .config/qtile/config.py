@@ -103,7 +103,7 @@ keys_assignation = [
     # multiple stack panes
     ([mod, 'shift'], 'Return', lazy.layout.toggle_split(),
         'Toggle between split and unsplit sides of stack'),
-    ([mod], 'Return', lazy.spawn(terminal), 'Launch terminal'),
+    # ([mod], 'Return', lazy.spawn(terminal), 'Launch terminal'),
 
     # Toggle between different layouts
     ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
@@ -120,8 +120,8 @@ keys_assignation = [
     # Run prompt
     # ([mod], 'x', lazy.spawncmd(),
     #     'Spawn a command using a prompt widget'),
-    ([alt], 'space', lazy.spawn('dmenu_run -p Run: -l 5 -sb dimgrey'),
-        'Spawn a command using dmenu'),
+    # ([alt], 'space', lazy.spawn('dmenu_run -p Run: -l 5 -sb dimgrey'),
+    #     'Spawn a command using dmenu'),
 
     # Switch between groups
     ([mod, 'control'], ['Left', 't', 'r'], lazy.screen.prev_group(),
@@ -130,22 +130,22 @@ keys_assignation = [
         'Move to the group on the right'),
 
     # Sound
-    ([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle'),
-        'Mute sound'),
-    ([], 'XF86AudioLowerVolume',
-        lazy.spawn('amixer -c 0 sset Master 1- unmute'),
-        'Lower volume'),
-    ([], 'XF86AudioRaiseVolume',
-        lazy.spawn('amixer -c 0 sset Master 1+ unmute'),
-        'Raise volume'),
+    # ([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle'),
+    #     'Mute sound'),
+    # ([], 'XF86AudioLowerVolume',
+    #     lazy.spawn('amixer -c 0 sset Master 1- unmute'),
+    #     'Lower volume'),
+    # ([], 'XF86AudioRaiseVolume',
+    #     lazy.spawn('amixer -c 0 sset Master 1+ unmute'),
+    #     'Raise volume'),
 
     # Brightness
-    ([], 'XF86MonBrightnessDown', lazy.spawn('xbacklight -dec 15'), ''),
-    ([], 'XF86MonBrightnessUp', lazy.spawn('xbacklight -inc 15'), ''),
+    # ([], 'XF86MonBrightnessDown', lazy.spawn('xbacklight -dec 15'), ''),
+    # ([], 'XF86MonBrightnessUp', lazy.spawn('xbacklight -inc 15'), ''),
 
     # Applications
-    ([mod], 'b', lazy.spawn(browser), ''),
-    ([mod], 'dollar', lazy.spawn(filemanager), ''),
+    # ([mod], 'b', lazy.spawn(browser), ''),
+    # ([mod], 'dollar', lazy.spawn(filemanager), ''),
 
     # Screens
     # Switch focus of monitors
