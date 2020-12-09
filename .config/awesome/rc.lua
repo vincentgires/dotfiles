@@ -98,6 +98,11 @@ local keyboard_layout = awful.widget.keyboardlayout()
 -- Create a textclock widget
 local textclock_widget = wibox.widget.textclock('%Y-%m-%d %H:%M')
 
+-- Create separator widget
+local separator_widget = wibox.widget{
+  markup = ' | ',
+  widget = wibox.widget.textbox}
+
 -- Create volume widget
 local volume_widget = wibox.widget{
   markup = 'volume',
@@ -105,15 +110,24 @@ local volume_widget = wibox.widget{
   valign = 'center',
   widget = wibox.widget.textbox}
 
--- Create separator widget
-local separator_widget = wibox.widget{
-  markup = ' | ',
-  widget = wibox.widget.textbox}
-
 function volume_widget:update()
-  local get_volume_cmd = "amixer sget Master | grep 'Left:' | awk -F'[][]' '{ print $2 }'"
+  local get_volume_cmd = "amixer sget Master | grep 'Left:' | awk -F'[][]' '{print $2}'"
   awful.spawn.easy_async_with_shell(get_volume_cmd, function(out)
       self.markup = 'volume ' .. out
+  end)
+end
+
+-- Create memory widget
+local memory_widget = wibox.widget{
+  markup = 'memory',
+  align = 'center',
+  valign = 'center',
+  widget = wibox.widget.textbox}
+
+function memory_widget:update()
+  local get_memory_cmd = 'free -h | awk \'/Mem:/ {print $3 " / " $2}\''
+  awful.spawn.easy_async_with_shell(get_memory_cmd, function(out)
+      self.markup = 'memory ' .. out
   end)
 end
 
@@ -228,6 +242,8 @@ awful.screen.connect_for_each_screen(function(s)
       wibox.widget.systray(),
       separator_widget,
       textclock_widget,
+      separator_widget,
+      memory_widget,
       separator_widget,
       volume_widget,
       separator_widget,
@@ -667,8 +683,10 @@ gears.timer{
   autostart = true,
   callback = function()
     volume_widget:update()
+    memory_widget:update()
   end
 }
 
 -- Startup
 volume_widget:update()
+memory_widget:update()
