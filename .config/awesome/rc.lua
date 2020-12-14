@@ -690,3 +690,6 @@ gears.timer{
 -- Startup
 volume_widget:update()
 memory_widget:update()
+
+-- Increase typing rate
+awful.spawn('xset r rate 220 35')

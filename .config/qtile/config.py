@@ -372,6 +372,8 @@ focus_on_window_activation = 'smart'
 def autostart():
     # Set keyboard layout with bépo
     os.system('setxkbmap fr bepo')
+    # Increase typing rate
+    os.system('xset r rate 220 35')
 
 
 # @hook.subscribe.client_new
