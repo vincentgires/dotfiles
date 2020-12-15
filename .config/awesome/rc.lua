@@ -125,9 +125,14 @@ local battery_widget = wibox.widget{
   widget = wibox.widget.textbox}
 
 function battery_widget:update()
-  local f = io.open('/sys/class/power_supply/BAT1/capacity')
-  self.markup = 'battery ' .. f:read() .. '%'
-  f:close()
+  local capacity_file = '/sys/class/power_supply/BAT1/capacity'
+  local f = io.open(capacity_file, 'r')
+  if f then
+    self.markup = 'battery ' .. f:read() .. '%'
+    f:close()
+  else
+    self.markup = 'no battery'
+  end
 end
 
 -- Create memory widget
