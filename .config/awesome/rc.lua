@@ -266,10 +266,10 @@ local globalkeys = gears.table.join(
     {modkey}, 'F1', hotkeys_popup.show_help,
     {description = 'show help', group = 'awesome'}),
   awful.key(
-    {modkey}, 'Left', awful.tag.viewprev,
+    {modkey}, 't', awful.tag.viewprev,
     {description = 'view previous', group = 'tag'}),
   awful.key(
-    {modkey}, 'Right', awful.tag.viewnext,
+    {modkey}, 'n', awful.tag.viewnext,
     {description = 'view next', group = 'tag'}),
   awful.key(
     {modkey}, 'Escape', awful.tag.history.restore,
@@ -324,10 +324,10 @@ local globalkeys = gears.table.join(
     {description = 'quit awesome', group = 'awesome'}),
 
   awful.key(
-    {modkey}, 'n', function() awful.tag.incmwfact(0.05) end,
+    {modkey}, 'j', function() awful.tag.incmwfact(0.05) end,
     {description = 'increase master width factor', group = 'layout'}),
   awful.key(
-    {modkey}, 't', function() awful.tag.incmwfact(-0.05) end,
+    {modkey}, 'v', function() awful.tag.incmwfact(-0.05) end,
     {description = 'decrease master width factor', group = 'layout'}),
   awful.key(
     {modkey}, 'l', function() awful.client.incwfact(0.05) end,
