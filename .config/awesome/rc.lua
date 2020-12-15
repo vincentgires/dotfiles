@@ -117,6 +117,19 @@ function volume_widget:update()
   end)
 end
 
+-- Create battery widget
+local battery_widget = wibox.widget{
+  markup = 'battery',
+  align = 'center',
+  valign = 'center',
+  widget = wibox.widget.textbox}
+
+function battery_widget:update()
+  local f = io.open('/sys/class/power_supply/BAT1/capacity')
+  self.markup = 'battery ' .. f:read() .. '%'
+  f:close()
+end
+
 -- Create memory widget
 local memory_widget = wibox.widget{
   markup = 'memory',
@@ -244,6 +257,8 @@ awful.screen.connect_for_each_screen(function(s)
       textclock_widget,
       separator_widget,
       memory_widget,
+      separator_widget,
+      battery_widget,
       separator_widget,
       volume_widget,
       separator_widget,
@@ -683,12 +698,14 @@ gears.timer{
   autostart = true,
   callback = function()
     volume_widget:update()
+    battery_widget:update()
     memory_widget:update()
   end
 }
 
 -- Startup
 volume_widget:update()
+battery_widget:update()
 memory_widget:update()
 
 -- Increase typing rate
