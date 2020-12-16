@@ -67,6 +67,37 @@ awful.layout.layouts = {
 }
 -- }}}
 
+function delete_tag()
+  local tag = awful.screen.focused().selected_tag
+  if not tag then
+    return
+  end
+  tag:delete()
+end
+
+function add_tag(name)
+  local name = name or #awful.screen.focused().tags + 1
+  awful.tag.add(name, {
+    screen = awful.screen.focused(),
+    layout = awful.layout.suit.tile}):view_only()
+end
+
+function rename_tag()
+  awful.prompt.run {
+    prompt = 'New tag name: ',
+    textbox = awful.screen.focused().prompt_box.widget,
+    exe_callback = function(new_name)
+      if not new_name or #new_name == 0 then
+        return
+      end
+      local tag = awful.screen.focused().selected_tag
+      if tag then
+        tag.name = new_name
+      end
+    end
+  }
+end
+
 -- {{{ Menu
 -- Create a launcher widget and a main menu
 local awesome_menu = {
@@ -393,7 +424,22 @@ local globalkeys = gears.table.join(
   -- Menubar
   awful.key(
     {modkey}, 'p', function() menubar.show() end,
-    {description = 'show the menubar', group = 'launcher'})
+    {description = 'show the menubar', group = 'launcher'}),
+
+  -- Add tag
+  awful.key(
+    {modkey, 'Control', 'Shift'}, 'n', add_tag,
+    {description = 'add tag ', group = 'tag'}),
+
+  -- Delate tag
+  awful.key(
+    {modkey, 'Control', 'Shift'}, 'd', delete_tag,
+    {description = 'delete tag ', group = 'tag'}),
+
+  -- Delate tag
+  awful.key(
+    {modkey}, 'F2', rename_tag,
+    {description = 'rename tag ', group = 'tag'})
 
   -- Sound volume
   -- awful.key(
