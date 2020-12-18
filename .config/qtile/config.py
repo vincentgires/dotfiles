@@ -37,20 +37,20 @@ keys_assignation = [
         'Move focus down in stack pane'),
     ([mod], ['r', 'Up'], lazy.layout.up(),
         'Move focus up in stack pane'),
-    ([mod], ['t', 'Left'], lazy.layout.left(),
-        'Move focus left in stack pane'),
-    ([mod], ['n', 'Right'], lazy.layout.right(),
-        'Move focus right in stack pane'),
+    # ([mod], ['t', 'Left'], lazy.layout.left(),
+    #     'Move focus left in stack pane'),
+    # ([mod], ['n', 'Right'], lazy.layout.right(),
+    #     'Move focus right in stack pane'),
 
     # Move windows
     ([mod, 'shift'], ['s', 'Down'], lazy.layout.shuffle_down(),
         'Move window down in current stack'),
     ([mod, 'shift'], ['r', 'Up'], lazy.layout.shuffle_up(),
         'Move window up in current stack'),
-    ([mod, 'shift'], ['t', 'Left'], lazy.layout.shuffle_left(),
-        'Move window left in current stack'),
-    ([mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
-        'Move window right in current stack'),
+    # ([mod, 'shift'], ['t', 'Left'], lazy.layout.shuffle_left(),
+    #     'Move window left in current stack'),
+    # ([mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
+    #     'Move window right in current stack'),
 
     # ([mod, 'control', 'shift'], ['s', 'Down'],
     #     lazy.window.move_floating(0, 15),
@@ -120,32 +120,16 @@ keys_assignation = [
     # Run prompt
     # ([mod], 'x', lazy.spawncmd(),
     #     'Spawn a command using a prompt widget'),
-    # ([alt], 'space', lazy.spawn('dmenu_run -p Run: -l 5 -sb dimgrey'),
-    #     'Spawn a command using dmenu'),
 
     # Switch between groups
-    ([mod, 'control'], ['Left', 't', 'r'], lazy.screen.prev_group(),
+    ([mod], ['t'], lazy.screen.prev_group(),
         'Move to the group on the left'),
-    ([mod, 'control'], ['Right', 'n', 's'], lazy.screen.next_group(),
+    ([mod, 'control'], 'Left', lazy.screen.prev_group(),
+        'Move to the group on the left'),
+    ([mod], ['n'], lazy.screen.next_group(),
         'Move to the group on the right'),
-
-    # Sound
-    # ([], 'XF86AudioMute', lazy.spawn('amixer -q set Master toggle'),
-    #     'Mute sound'),
-    # ([], 'XF86AudioLowerVolume',
-    #     lazy.spawn('amixer -c 0 sset Master 1- unmute'),
-    #     'Lower volume'),
-    # ([], 'XF86AudioRaiseVolume',
-    #     lazy.spawn('amixer -c 0 sset Master 1+ unmute'),
-    #     'Raise volume'),
-
-    # Brightness
-    # ([], 'XF86MonBrightnessDown', lazy.spawn('xbacklight -dec 15'), ''),
-    # ([], 'XF86MonBrightnessUp', lazy.spawn('xbacklight -inc 15'), ''),
-
-    # Applications
-    # ([mod], 'b', lazy.spawn(browser), ''),
-    # ([mod], 'dollar', lazy.spawn(filemanager), ''),
+    ([mod, 'control'], 'Right', lazy.screen.next_group(),
+        'Move to the group on the right'),
 
     # Screens
     # Switch focus of monitors

@@ -351,6 +351,14 @@ local globalkeys = gears.table.join(
     {modkey}, 'w', function() main_menu:show() end,
     {description = 'show main menu', group = 'awesome'}),
 
+  -- Awesome session
+  awful.key(
+    {modkey, 'Control'}, 'o', awesome.restart,
+    {description = 'reload awesome', group = 'awesome'}),
+  awful.key(
+    {modkey, 'Control'}, 'q', awesome.quit,
+    {description = 'quit awesome', group = 'awesome'}),
+
   -- Layout manipulation
   awful.key(
     {modkey, 'Shift'}, 's', function() awful.client.swap.byidx(1) end,
@@ -373,17 +381,6 @@ local globalkeys = gears.table.join(
       end
     end,
     {description = 'go back', group = 'client'}),
-
-  -- Standard program
-  -- awful.key(
-  --   {modkey}, 'Return', function() awful.spawn(terminal) end,
-  --   {description = 'open a terminal', group = 'launcher'}),
-  awful.key(
-    {modkey, 'Control'}, 'o', awesome.restart,
-    {description = 'reload awesome', group = 'awesome'}),
-  awful.key(
-    {modkey, 'Control'}, 'q', awesome.quit,
-    {description = 'quit awesome', group = 'awesome'}),
 
   awful.key(
     {modkey}, 'j', function() awful.tag.incmwfact(0.05) end,
@@ -419,7 +416,6 @@ local globalkeys = gears.table.join(
   -- Prompt
   -- awful.key(
     -- {altkey}, 'r', function() awful.screen.focused().prompt_box:run() end,
-    -- {altkey}, 'space', function() awful.spawn('dmenu_run -p Run: -l 5 -sb dimgrey') end,
     -- {description = 'run prompt', group = 'launcher'}),
   awful.key(
     {modkey}, 'x',
@@ -451,37 +447,6 @@ local globalkeys = gears.table.join(
   awful.key(
     {modkey}, 'F2', rename_tag,
     {description = 'rename tag ', group = 'tag'})
-
-  -- Sound volume
-  -- awful.key(
-  --   {}, 'XF86AudioMute',
-  --   function()
-  --     awful.spawn.with_shell('amixer -q set Master toggle')
-  --     volume_widget:update()
-  --   end,
-  --   {description = 'mute sound', group = 'sound'}),
-  -- awful.key(
-  --   {}, 'XF86AudioLowerVolume',
-  --   function()
-  --     awful.spawn.with_shell('amixer -c 0 sset Master 1- unmute')
-  --     volume_widget:update()
-  --   end,
-  --   {description = 'lower volume', group = 'sound'}),
-  -- awful.key(
-  --   {}, 'XF86AudioRaiseVolume',
-  --   function()
-  --     awful.spawn.with_shell('amixer -c 0 sset Master 1+ unmute')
-  --     volume_widget:update()
-  --   end,
-  --   {description = 'raise volume', group = 'sound'}),
-  --
-  -- -- Screen brightness
-  -- awful.key(
-  --   {}, 'XF86MonBrightnessDown', function() awful.spawn.with_shell('xbacklight -dec 15') end,
-  --   {description = 'lower brightness', group = 'sound'}),
-  -- awful.key(
-  --   {}, 'XF86MonBrightnessUp', function() awful.spawn.with_shell('xbacklight -inc 15') end,
-  --   {description = 'raise brightness', group = 'sound'})
 )
 
 local clientkeys = gears.table.join(
@@ -678,12 +643,12 @@ awful.rules.rules = {
   -- {rule = { class = 'Firefox'},
   --  properties = {screen = 1, tag = '2'}},
 
-  -- Set Blender to not start as maximize which is the default on this application
+  -- Set Blender to not start as maximized
   {
     rule_any = {
       class = {'Blender'},
     },
-    properties = {maximized = false, minimized = true}
+    properties = {maximized = false}
   },
 }
 -- }}}
