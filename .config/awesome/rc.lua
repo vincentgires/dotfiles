@@ -135,11 +135,19 @@ local separator_widget = wibox.widget{
   widget = wibox.widget.textbox}
 
 -- Create volume widget
+volume_buttons = awful.util.table.join(
+    awful.button({}, 1, function() awful.spawn(terminal .. ' -e alsamixer') end),
+    awful.button({}, 2, function() awful.spawn('amixer -q set Master toggle') end), -- mute
+    awful.button({}, 4, function() awful.spawn('amixer -c 0 sset Master 1+ unmute') end), -- raise
+    awful.button({}, 5, function() awful.spawn('amixer -c 0 sset Master 1- unmute') end) -- lower
+)
+
 local volume_widget = wibox.widget{
   markup = 'volume',
   align = 'center',
   valign = 'center',
-  widget = wibox.widget.textbox}
+  widget = wibox.widget.textbox,
+  buttons = volume_buttons}
 
 function volume_widget:update()
   local get_volume_cmd = "amixer sget Master | grep 'Left:' | awk -F'[][]' '{print $2}'"
@@ -284,19 +292,22 @@ awful.screen.connect_for_each_screen(function(s)
       s.tag_list,
       s.prompt_box,
     },
-    s.tasklist_widget, -- Middle widget
+    { -- Middle widget
+      layout = wibox.layout.fixed.horizontal,
+      s.tasklist_widget,
+    },
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
       keyboard_layout,
       wibox.widget.systray(),
-      separator_widget,
-      textclock_widget,
       separator_widget,
       memory_widget,
       separator_widget,
       battery_widget,
       separator_widget,
       volume_widget,
+      separator_widget,
+      textclock_widget,
       separator_widget,
       s.layoutbox_widget
     },
@@ -745,10 +756,16 @@ client.connect_signal('unfocus', function(c) c.border_color = beautiful.border_n
 
 -- Timer update
 gears.timer{
-  timeout = 5,
+  timeout = 0.2,
   autostart = true,
   callback = function()
     volume_widget:update()
+  end
+}
+gears.timer{
+  timeout = 5,
+  autostart = true,
+  callback = function()
     battery_widget:update()
     memory_widget:update()
   end
