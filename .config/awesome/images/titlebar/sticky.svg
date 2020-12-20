@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="svg4306"
+   width="22"
+   height="22"
+   version="1.1"
+   style="enable-background:new"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   sodipodi:docname="sticky.svg">
+  <metadata
+     id="metadata4205">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4203" />
+  <sodipodi:namedview
+     pagecolor="#323232"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1918"
+     inkscape:window-height="1158"
+     id="namedview4201"
+     showgrid="false"
+     inkscape:zoom="5.1747361"
+     inkscape:cx="36.477311"
+     inkscape:cy="19.687886"
+     inkscape:window-x="0"
+     inkscape:window-y="20"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="pressed-center"
+     inkscape:document-rotation="0" />
+  <g
+     id="hover-center">
+    <g
+       id="g4206"
+       transform="translate(23,0)">
+      <rect
+         id="rect4208"
+         width="22"
+         height="22"
+         x="0"
+         y="0"
+         style="opacity:0.00100002;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <circle
+       style="opacity:1;fill:#cfd8dc;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:478.43673706;stroke-opacity:0.4"
+       id="circle4212"
+       cx="34"
+       cy="11"
+       r="5.1773243" />
+    <circle
+       style="opacity:1;fill:#4b5975;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:8;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle4213"
+       cx="34"
+       cy="11"
+       r="3.8370566" />
+  </g>
+  <g
+     id="inactive-center">
+    <rect
+       id="rect4180"
+       width="22"
+       height="22"
+       x="69"
+       y="0"
+       style="opacity:0.001;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       style="opacity:0.3;fill:#f2f2f2;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:8;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle4217"
+       cx="80"
+       cy="11"
+       r="4" />
+  </g>
+  <g
+     id="deactivated-center">
+    <rect
+       id="rect4278"
+       width="22"
+       height="22"
+       x="92"
+       y="0"
+       style="opacity:0.001;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <circle
+       id="circle4219"
+       cx="103"
+       cy="11"
+       r="4"
+       style="opacity:0.3;fill:#7792c3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:8;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  </g>
+  <g
+     style="enable-background:new"
+     id="pressed-center"
+     transform="translate(24,0)">
+    <g
+       id="g4206-6"
+       transform="translate(23,0)">
+      <rect
+         id="rect4208-7"
+         width="22"
+         height="22"
+         x="0"
+         y="0"
+         style="opacity:0.00100002;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <circle
+       style="opacity:1;fill:#cfd8dc;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:478.43673706;stroke-opacity:0.4"
+       id="circle4212-5"
+       cx="34"
+       cy="11"
+       r="5.1773243" />
+    <circle
+       style="opacity:1;fill:#4d9749;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:8;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="circle4213-3"
+       cx="34"
+       cy="11"
+       r="3.8370566" />
+  </g>
+  <g
+     style="enable-background:new"
+     id="active-center"
+     transform="translate(-22,0)">
+    <g
+       id="g4206-62"
+       transform="translate(23,0)">
+      <rect
+         id="rect4208-9"
+         width="22"
+         height="22"
+         x="0"
+         y="0"
+         style="opacity:0.00100002;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+    <path
+       style="opacity:1;fill:#f2f2f2;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0;stroke-linecap:square;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:478.43673706;stroke-opacity:0.4"
+       d="M 34,5.8218144 A 5.1774363,5.1774363 0 0 0 28.821814,11 5.1774363,5.1774363 0 0 0 34,16.178186 5.1774363,5.1774363 0 0 0 39.178186,11 5.1774363,5.1774363 0 0 0 34,5.8218144 Z m 0,1.3408561 A 3.8371396,3.8371396 0 0 1 37.837329,11 3.8371396,3.8371396 0 0 1 34,14.837329 3.8371396,3.8371396 0 0 1 30.162671,11 3.8371396,3.8371396 0 0 1 34,7.1626705 Z"
+       id="circle4212-1"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>
