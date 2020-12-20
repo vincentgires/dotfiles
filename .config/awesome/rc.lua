@@ -684,7 +684,9 @@ client.connect_signal('request::titlebars', function(c)
       end)
   )
 
-  awful.titlebar(c):setup{
+  local titlebar = awful.titlebar(c, {size = 20})
+
+  titlebar:setup{
     { -- Left
       awful.titlebar.widget.iconwidget(c),
       buttons = buttons,
