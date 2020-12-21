@@ -9,10 +9,10 @@
 "dmenu_run -p Run: -l 5 -sb dimgrey"
   mod1 + space
 
-"alacritty"
+"$TERMINAL"
   mod4 + Return
 
-"thunar"
+"$FILE_MANAGER"
   mod4 + dollar
 
 # mute sound
@@ -33,5 +33,5 @@
 "xbacklight -inc 15"
   XF86MonBrightnessUp
 
-"firefox"
+"$BROWSER"
   mod4 + b
