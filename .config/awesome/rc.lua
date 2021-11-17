@@ -438,12 +438,12 @@ local globalkeys = gears.table.join(
     {modkey, 'Control', 'Shift'}, 'n', add_tag,
     {description = 'add tag ', group = 'tag'}),
 
-  -- Delate tag
+  -- Delete tag
   awful.key(
     {modkey, 'Control', 'Shift'}, 'd', delete_tag,
     {description = 'delete tag ', group = 'tag'}),
 
-  -- Delate tag
+  -- Rename tag
   awful.key(
     {modkey}, 'F2', rename_tag,
     {description = 'rename tag ', group = 'tag'})
