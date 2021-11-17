@@ -1,28 +1,12 @@
 import os
-import shutil
 from libqtile import bar, layout, widget, hook
-from libqtile.config import (
-    Click, Drag, Group, Key, Match, Screen, ScratchPad, DropDown)
+from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
-# import psutil
 
 wmname = 'Qtile'
 keys = []
 mod = 'mod4'
 alt = 'mod1'
-# altgr = 'mod5'
-# terminal = guess_terminal()
-terminal = (
-    shutil.which('alacritty')
-    or shutil.which('st')
-    or shutil.which('xfce4-terminal'))
-browser = shutil.which('qutebrowser') or shutil.which('firefox')
-audioplayer = (
-    shutil.which('audacious')
-    or shutil.which('deadbeef')
-    or shutil.which('vlc'))
-filemanager = shutil.which('thunar')
 
 
 def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
@@ -97,14 +81,6 @@ keys_assignation = [
     ([mod, 'shift'], 'space', lazy.layout.rotate(),
         'Swap panes of split stack'),
 
-    # Toggle between split and unsplit sides of stack.
-    # Split = all windows displayed
-    # Unsplit = 1 window displayed, like Max layout, but still with
-    # multiple stack panes
-    ([mod, 'shift'], 'Return', lazy.layout.toggle_split(),
-        'Toggle between split and unsplit sides of stack'),
-    # ([mod], 'Return', lazy.spawn(terminal), 'Launch terminal'),
-
     # Toggle between different layouts
     ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
     ([mod, 'shift'], 'Tab', lazy.prev_layout(), 'Toggle between layouts'),
@@ -130,6 +106,8 @@ keys_assignation = [
         'Move to the group on the right'),
     ([mod, 'control'], 'Right', lazy.screen.next_group(),
         'Move to the group on the right'),
+    ([alt], 'Tab', lazy.screen.toggle_group(),
+        'Move to the last visited group'),
 
     # Screens
     # Switch focus of monitors
@@ -158,14 +136,17 @@ for modifiers, key, commands, desc in keys_assignation:
     else:
         keys.append(Key(modifiers, key, *commands, desc=desc))
 
-
 group_names = {
     'main': 'main',
     'net': 'net',
     'dev': 'dev',
     'chat': 'chat',
     'music': 'music',
-    'work': 'work'}
+    'work': 'work',
+    'lighting': 'lighting',
+    'compositing': 'compositing',
+    'farm': 'farm',
+    'review': 'review'}
 group_assignation = [
     (group_names['main'], 'quotedbl', {'layout': 'tile'}),
     (group_names['net'], 'guillemotleft',
@@ -175,10 +156,10 @@ group_assignation = [
     (group_names['chat'], 'parenleft', {'layout': 'tile'}),
     (group_names['music'], 'parenright', {'layout': 'tile'}),
     (group_names['work'], 'at', {'layout': 'max'}),
-    # ('7', 'plus'),
-    # ('8', 'minus'),
-    # ('9', 'slash'),
-    # ('0', 'asterisk')
+    (group_names['lighting'], 'plus', {'layout': 'tile'}),
+    (group_names['compositing'], 'minus', {'layout': 'tile'}),
+    (group_names['farm'], 'slash', {'layout': 'tile'}),
+    (group_names['review'], 'asterisk', {'layout': 'tile'})
 ]
 
 groups = [Group(name, **kwargs) for name, _, kwargs in group_assignation]
@@ -189,25 +170,8 @@ for name, key, _ in group_assignation:
             desc='Switch to group {}'.format(name)),
         # Send current window to another group
         Key([mod, 'shift'], key,
-            lazy.window.togroup(name, switch_group=True),
-            desc='Switch and move focused window to group {}'.format(name)),
-    ])
-
-# Dropdown
-dropdowm_config = {
-    'height': 0.7,
-    'width': 0.7,
-    'on_focus_lost_hide': True,
-    'warp_pointer': False}
-groups.extend([
-    ScratchPad('scratchpad', [
-        DropDown('terminal', terminal, **dropdowm_config),
-        DropDown('audioplayer', audioplayer, **dropdowm_config)])
-])
-keys.extend([
-  Key([], 'F11', lazy.group['scratchpad'].dropdown_toggle('terminal')),
-  Key([], 'F10', lazy.group['scratchpad'].dropdown_toggle('audioplayer')),
-])
+            lazy.window.togroup(name, switch_group=False),
+            desc='Switch and move focused window to group {}'.format(name))])
 
 active_color = '555555'
 inactive_color = '404040'
@@ -271,12 +235,13 @@ screens = [
                 # widget.Prompt(),
                 widget.Sep(),
                 widget.WindowName(),
-                # widget.Sep(),
-                # widget.TaskList(
-                #     border=active_color,
-                #     borderwidth=1,
-                #     highlight_method='block',
-                #     max_title_width=250),
+                widget.Sep(),
+                widget.TaskList(
+                    border=active_color,
+                    borderwidth=1,
+                    highlight_method='block',
+                    max_title_width=250),
+                widget.Sep(),
                 widget.Systray(),
                 # widget.KeyboardLayout(),
                 # widget.Sep(),
@@ -291,7 +256,7 @@ screens = [
                 widget.Sep(),
                 widget.Clock(format='%Y-%m-%d %H:%M'),
                 widget.Sep(),
-                widget.QuickExit(default_text='🗙', countdown_format='{}'),
+                widget.QuickExit()
             ],
             25,
             background='131313'
@@ -307,13 +272,18 @@ screens = [
                 widget.CurrentLayout(),
                 widget.Sep(),
                 widget.WindowName(),
+                widget.Sep(),
+                widget.TaskList(
+                    border=active_color,
+                    borderwidth=1,
+                    highlight_method='block',
+                    max_title_width=250)
             ],
             25,
         ),
     ),
 ]
 
-# Drag floating layouts.
 mouse = [
     Drag([mod], 'Button1', lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
@@ -328,28 +298,19 @@ dgroups_app_rules = []
 follow_mouse_focus = True
 bring_front_click = False
 cursor_warp = False
-floating_layout = layout.Floating(
-    float_rules=[
-        # Run the xprop utility to see the wm_class and name of an X client
-        {'wmclass': 'confirm'},
-        {'wmclass': 'dialog'},
-        {'wmclass': 'download'},
-        {'wmclass': 'error'},
-        {'wmclass': 'file_progress'},
-        {'wmclass': 'notification'},
-        {'wmclass': 'splash'},
-        {'wmclass': 'toolbar'},
-        {'wmclass': 'confirmreset'},  # gitk
-        {'wmclass': 'makebranch'},  # gitk
-        {'wmclass': 'maketag'},  # gitk
-        {'wname': 'branchdialog'},  # gitk
-        {'wname': 'pinentry'},  # GPG key password entry
-        {'wmclass': 'ssh-askpass'},  # ssh-askpass
-    ],
-    **layout_theme
-)
+floating_layout = layout.Floating(float_rules=[
+    *layout.Floating.default_float_rules,
+    Match(wm_class='confirmreset'),  # gitk
+    Match(wm_class='makebranch'),  # gitk
+    Match(wm_class='maketag'),  # gitk
+    Match(wm_class='ssh-askpass'),  # ssh-askpass
+    Match(title='branchdialog'),  # gitk
+    Match(title='pinentry'),  # GPG key password entry
+])
 auto_fullscreen = True
 focus_on_window_activation = 'smart'
+reconfigure_screens = True
+auto_minimize = True
 
 
 @hook.subscribe.startup_once
@@ -359,41 +320,3 @@ def autostart():
     # Increase typing rate
     os.system('xset r rate 220 35')
 
-
-# @hook.subscribe.client_new
-# def agroup(client):
-#     # Run xprop to find wm_class
-#     apps = {
-#         'Navigator': group_names['net'],
-#         'qutebrowser': group_names['net'],
-#         'kdevelop': group_names['dev'],
-#         'element': group_names['chat']}
-#     wm_class = client.window.get_wm_class()[0]
-#     group = apps.get(wm_class, None)
-#     if group:
-#         client.togroup(group, switch_group=True)
-
-
-# Swallow feature borrowed from https://github.com/qtile/qtile/issues/1771
-# @hook.subscribe.client_new
-# def _swallow(window):
-#     pid = window.window.get_net_wm_pid()
-#     ppid = psutil.Process(pid).ppid()
-#     cpids = {
-#         c.window.get_net_wm_pid(): wid
-#         for wid, c in window.qtile.windows_map.items()}
-#     for i in range(5):
-#         if not ppid:
-#             return
-#         if ppid in cpids:
-#             parent = window.qtile.windows_map.get(cpids[ppid])
-#             parent.minimized = True
-#             window.parent = parent
-#             return
-#         ppid = psutil.Process(ppid).ppid()
-
-
-# @hook.subscribe.client_killed
-# def _unswallow(window):
-#     if hasattr(window, 'parent'):
-#         window.parent.minimized = False
