@@ -1,5 +1,5 @@
 import os
-from libqtile import bar, layout, widget, hook
+from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 
@@ -14,6 +14,7 @@ def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
         keys.append(Key(modifiers, k, *commands, desc=desc))
 
 
+# This config assume bépo layout is used
 # Run the xev utility to see the key code
 keys_assignation = [
     # Switch between windows
@@ -150,15 +151,23 @@ group_names = {
 group_assignation = [
     (group_names['main'], 'quotedbl', {'layout': 'tile'}),
     (group_names['net'], 'guillemotleft',
-        {'layout': 'tile', 'matches': [Match(wm_class=['firefox'])]}),
+        {'layout': 'tile', 'matches': [Match(wm_class=['Firefox'])]}),
     (group_names['dev'], 'guillemotright',
         {'layout': 'tile', 'matches': [Match(wm_class=['kdevelop'])]}),
-    (group_names['chat'], 'parenleft', {'layout': 'tile'}),
+    (group_names['chat'], 'parenleft',
+        {'matches': [Match(wm_class=['discord'])],
+         'layout': 'tile'}),
     (group_names['music'], 'parenright', {'layout': 'tile'}),
     (group_names['work'], 'at', {'layout': 'max'}),
-    (group_names['lighting'], 'plus', {'layout': 'tile'}),
-    (group_names['compositing'], 'minus', {'layout': 'tile'}),
-    (group_names['farm'], 'slash', {'layout': 'tile'}),
+    (group_names['lighting'], 'plus',
+        {'matches': [Match(wm_class=['maya.bin'])],
+         'layout': 'tile'}),
+    (group_names['compositing'], 'minus',
+        {'matches': [Match(wm_class=['Nuke'])],
+         'layout': 'tile'}),
+    (group_names['farm'], 'slash',
+        {'layout': 'tile',
+         'matches': [Match(wm_class=['xConsole.bin'])]}),
     (group_names['review'], 'asterisk', {'layout': 'tile'})
 ]
 
@@ -183,8 +192,14 @@ layout_theme = {
     'border_normal': '313131'}
 
 layouts = [
-    layout.Tile(shift_windows=True, **layout_theme),
-    layout.MonadTall(new_at_current=True, **layout_theme),
+    layout.Tile(
+        shift_windows=True,
+        master_match=Match(
+            wm_class=['kdevelop', 'Nuke', 'maya.bin', 'Blender']),
+        **layout_theme),
+    layout.MonadTall(
+        new_client_position='after_current',
+        ratio=0.65, **layout_theme),
     layout.Max(**layout_theme),
     layout.TreeTab(
         **layout_theme,
@@ -305,18 +320,10 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='maketag'),  # gitk
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(title='branchdialog'),  # gitk
-    Match(title='pinentry'),  # GPG key password entry
-])
+    Match(title='pinentry')],  # GPG key password entry
+    **layout_theme)
 auto_fullscreen = True
 focus_on_window_activation = 'smart'
 reconfigure_screens = True
 auto_minimize = True
-
-
-@hook.subscribe.startup_once
-def autostart():
-    # Set keyboard layout with bépo
-    os.system('setxkbmap fr bepo')
-    # Increase typing rate
-    os.system('xset r rate 220 35')
 
