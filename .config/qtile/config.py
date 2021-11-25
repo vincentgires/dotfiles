@@ -55,8 +55,8 @@ keys_assignation = [
         'Flip pane'),
 
     # Windows geometry
-    ([mod], 'v', lazy.layout.maximize(), 'Maximize'),
     ([mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
+    ([mod], 'm', lazy.window.toggle_maximize(), 'Maximize'),
     ([mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
     # MonadTall and Tile specific
     ([mod], 'd', [lazy.layout.shrink(), lazy.layout.decrease_nmaster()],
