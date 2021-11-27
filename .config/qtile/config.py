@@ -2,8 +2,10 @@ import os
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
+from qtile_cfg import groups_config, master_match
 
 wmname = 'Qtile'
+groups = []
 keys = []
 mod = 'mod4'
 alt = 'mod1'
@@ -69,10 +71,10 @@ keys_assignation = [
     ([mod], 'j', lazy.layout.increase_ratio(),
         'Increase ratio (Tile)'),
     # Bsp specific
-    # ([mod], 'd', lazy.layout.grow_down(), 'Grow down'),
+    # ([mod], 'd', lazy.layout.grow_down(), 'Grow down'),
     # ([mod], 'l', lazy.layout.grow_up(), 'Grow up'),
     # ([mod], 'v', lazy.layout.grow_left(), 'Grow left'),
-    # ([mod], 'j', lazy.layout.grow_right(), 'Grow right'),
+    # ([mod], 'j', lazy.layout.grow_right(), 'Grow right'),
 
     # Switch window focus to other pane(s) of stack
     ([mod], 'space', lazy.layout.next(),
@@ -126,8 +128,7 @@ keys_assignation = [
     ([mod, 'control', 'shift'], 'guillemotleft',
         [lazy.window.toscreen(1),
          lazy.to_screen(1)],
-        'Move to monitor 2'),
-]
+        'Move to monitor 2')]
 
 for modifiers, key, commands, desc in keys_assignation:
     if not isinstance(commands, (tuple, list)):
@@ -137,65 +138,41 @@ for modifiers, key, commands, desc in keys_assignation:
     else:
         keys.append(Key(modifiers, key, *commands, desc=desc))
 
-group_names = {
-    'main': 'main',
-    'net': 'net',
-    'dev': 'dev',
-    'chat': 'chat',
-    'music': 'music',
-    'work': 'work',
-    'lighting': 'lighting',
-    'compositing': 'compositing',
-    'farm': 'farm',
-    'review': 'review'}
-group_assignation = [
-    (group_names['main'], 'quotedbl', {'layout': 'tile'}),
-    (group_names['net'], 'guillemotleft',
-        {'layout': 'tile', 'matches': [Match(wm_class=['Firefox'])]}),
-    (group_names['dev'], 'guillemotright',
-        {'layout': 'tile', 'matches': [Match(wm_class=['kdevelop'])]}),
-    (group_names['chat'], 'parenleft',
-        {'matches': [Match(wm_class=['discord'])],
-         'layout': 'tile'}),
-    (group_names['music'], 'parenright', {'layout': 'tile'}),
-    (group_names['work'], 'at', {'layout': 'max'}),
-    (group_names['lighting'], 'plus',
-        {'matches': [Match(wm_class=['maya.bin'])],
-         'layout': 'tile'}),
-    (group_names['compositing'], 'minus',
-        {'matches': [Match(wm_class=['Nuke'])],
-         'layout': 'tile'}),
-    (group_names['farm'], 'slash',
-        {'layout': 'tile',
-         'matches': [Match(wm_class=['xConsole.bin'])]}),
-    (group_names['review'], 'asterisk', {'layout': 'tile'})
-]
-
-groups = [Group(name, **kwargs) for name, _, kwargs in group_assignation]
-for name, key, _ in group_assignation:
+for name, data in groups_config.items():
+    # Create group
+    cfg_matches = data.get('matches')
+    if cfg_matches is not None:
+        matches = [Match(**x) for x in cfg_matches]
+    else:
+        matches = None
+    groups.append(
+        Group(
+            name,
+            layout=data.get('layout'),
+            matches=matches))
+    # Bind key
     keys.extend([
         # Switch to group
-        Key([mod], key, lazy.group[name].toscreen(),
-            desc='Switch to group {}'.format(name)),
+        Key([mod], data['key'], lazy.group[name].toscreen(),
+            desc=f'Switch to group {name}'),
         # Send current window to another group
-        Key([mod, 'shift'], key,
+        Key([mod, 'shift'], data['key'],
             lazy.window.togroup(name, switch_group=False),
-            desc='Switch and move focused window to group {}'.format(name))])
+            desc=f'Switch and move focused window to group {name}')])
 
 active_color = '555555'
 inactive_color = '404040'
 
 layout_theme = {
     'border_width': 1,
-    'margin': 6,
+    'margin': 5,
     'border_focus': 'dimgrey',
     'border_normal': '313131'}
 
 layouts = [
     layout.Tile(
         shift_windows=True,
-        master_match=Match(
-            wm_class=['kdevelop', 'Nuke', 'maya.bin', 'Blender']),
+        master_match=Match(**master_match),
         **layout_theme),
     layout.MonadTall(
         new_client_position='after_current',
@@ -244,8 +221,6 @@ screens = [
         top=bar.Bar(
             [
                 create_groupbox(),
-                widget.Sep(),
-                widget.CurrentLayout(),
                 # widget.Sep(),
                 # widget.Prompt(),
                 widget.Sep(),
@@ -256,8 +231,6 @@ screens = [
                     borderwidth=1,
                     highlight_method='block',
                     max_title_width=250),
-                widget.Sep(),
-                widget.Systray(),
                 # widget.KeyboardLayout(),
                 # widget.Sep(),
                 # widget.Backlight(),
@@ -266,6 +239,9 @@ screens = [
                 widget.MemoryGraph(**graph_theme),
                 widget.SwapGraph(**graph_theme),
                 widget.Sep(),
+                widget.CurrentLayout(),
+                widget.Sep(),
+                widget.Systray(),
                 widget.TextBox(text='🔊'),
                 widget.Volume(),
                 widget.Sep(),
@@ -305,8 +281,7 @@ mouse = [
     Drag([mod], 'Button3', lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
     Click([mod], 'Button2', lazy.window.bring_to_front()),
-    Click([mod, 'control'], 'Button1', lazy.window.toggle_floating())
-]
+    Click([mod, 'control'], 'Button1', lazy.window.toggle_floating())]
 
 dgroups_key_binder = None
 dgroups_app_rules = []
@@ -326,4 +301,3 @@ auto_fullscreen = True
 focus_on_window_activation = 'smart'
 reconfigure_screens = True
 auto_minimize = True
-
