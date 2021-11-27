@@ -146,10 +146,7 @@ for name, data in groups_config.items():
     else:
         matches = None
     groups.append(
-        Group(
-            name,
-            layout=data.get('layout'),
-            matches=matches))
+        Group(name, layout=data.get('layout'), matches=matches))
     # Bind key
     keys.extend([
         # Switch to group
