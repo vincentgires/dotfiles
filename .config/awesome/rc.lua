@@ -1,3 +1,4 @@
+local config = require('awesome_cfg')
 -- Standard awesome library
 local gears = require('gears')
 local awful = require('awful')
@@ -46,8 +47,8 @@ end
 beautiful.init('~/.config/awesome/theme.lua')
 
 -- Applications
-local terminal = 'alacritty'
-local editor = os.getenv('EDITOR') or 'nano'
+local terminal = os.getenv('TERMINAL')
+local editor = os.getenv('EDITOR') or 'vim'
 local editor_cmd = terminal .. ' -e ' .. editor
 
 -- Define modkeys
@@ -57,11 +58,7 @@ local altkey = 'Mod1'
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
   awful.layout.suit.tile,
-  awful.layout.suit.tile.left,
-  awful.layout.suit.tile.bottom,
-  awful.layout.suit.tile.top,
   awful.layout.suit.spiral,
-  -- awful.layout.suit.spiral.dwindle,
   awful.layout.suit.max,
   awful.layout.suit.floating
 }
@@ -253,7 +250,7 @@ awful.screen.connect_for_each_screen(function(s)
   set_wallpaper(s)
 
   -- Each screen has its own tag table
-  awful.tag({'main', 'net', 'dev', 'chat', 'music', 'work'}, s, awful.layout.layouts[1])
+  awful.tag(config.tags, s, awful.layout.layouts[1])
 
   -- Create a promptbox for each screen
   s.prompt_box = awful.widget.prompt()
@@ -643,20 +640,14 @@ awful.rules.rules = {
   {
     rule_any = {type = {'dialog'}},
     properties = {ontop = true}
-  },
-
-  -- Set Firefox to always map on the tag named '2' on screen 1
-  -- {rule = { class = 'Firefox'},
-  --  properties = {screen = 1, tag = '2'}},
-
-  -- Set Blender to not start as maximized
-  {
-    rule_any = {
-      class = {'Blender'},
-    },
-    properties = {maximized = false}
-  },
+  }
 }
+
+-- Add rules from awesome_cfg file
+for _, v in ipairs(config.rules) do
+  table.insert(awful.rules.rules, v)
+end
+
 -- }}}
 
 -- {{{ Signals
@@ -736,6 +727,7 @@ gears.timer{
     volume_widget:update()
   end
 }
+
 gears.timer{
   timeout = 5,
   autostart = true,
@@ -749,6 +741,3 @@ gears.timer{
 volume_widget:update()
 battery_widget:update()
 memory_widget:update()
-
--- Increase typing rate
-awful.spawn('xset r rate 220 35')
