@@ -14,7 +14,7 @@ groups_config = {
         'key': 'parenleft',
         'layout': 'tile',
         'matches': [{'wm_class': ['element', 'discord']}]},
-    'music': {
+    'media': {
         'key': 'parenright',
         'layout': 'tile'},
     'work': {

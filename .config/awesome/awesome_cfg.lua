@@ -1,5 +1,5 @@
 config = {
-  tags = {'main', 'net', 'dev', 'chat', 'music', 'work'},
+  tags = {'main', 'net', 'dev', 'chat', 'media', 'work'},
   rules = {
     {rule_any = {class = {'firefox', 'brave-browser'}},
      properties = {tag = 'net'}},
