@@ -35,3 +35,9 @@
 
 "$BROWSER"
   mod4 + b
+
+"xlock -mode blank"
+  control + shift + l
+
+"xkill"
+  control + mod1 + Escape
