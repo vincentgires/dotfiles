@@ -192,7 +192,7 @@ extension_defaults = widget_defaults.copy()
 
 def _create_groupbox():
     return widget.GroupBox(
-        borderwidth=2,
+        borderwidth=1,
         highlight_method='line',
         highlight_color=['252525'] * 2,
         active=_font_color,
