@@ -7,278 +7,262 @@ from qtile_cfg import groups_config, master_match
 wmname = 'Qtile'
 groups = []
 keys = []
-mod = 'mod4'
-alt = 'mod1'
-
-
-def assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
-    for k in key:
-        keys.append(Key(modifiers, k, *commands, desc=desc))
-
-
-# This config assume bépo layout is used
-# Run the xev utility to see the key code
-keys_assignation = [
+_mod = 'mod4'
+_alt = 'mod1'
+_moving_floating = 15
+_font_color = 'c3c3c3'
+_active_color = '353535'
+_inactive_color = '454545'
+_layout_theme = {
+    'border_width': 1,
+    'margin': 5,
+    'border_focus': 'dimgrey',
+    'border_normal': '313131'}
+_keys_assignation = [
     # Switch between windows
-    ([mod], ['s', 'Down'], lazy.layout.down(),
+    ([_mod], ['s', 'Down'], lazy.layout.down(),
         'Move focus down in stack pane'),
-    ([mod], ['r', 'Up'], lazy.layout.up(),
+    ([_mod], ['r', 'Up'], lazy.layout.up(),
         'Move focus up in stack pane'),
-    # ([mod], ['t', 'Left'], lazy.layout.left(),
+    # ([_mod], ['t', 'Left'], lazy.layout.left(),
     #     'Move focus left in stack pane'),
-    # ([mod], ['n', 'Right'], lazy.layout.right(),
+    # ([_mod], ['n', 'Right'], lazy.layout.right(),
     #     'Move focus right in stack pane'),
 
     # Move windows
-    ([mod, 'shift'], ['s', 'Down'], lazy.layout.shuffle_down(),
+    ([_mod, 'shift'], ['s', 'Down'], lazy.layout.shuffle_down(),
         'Move window down in current stack'),
-    ([mod, 'shift'], ['r', 'Up'], lazy.layout.shuffle_up(),
+    ([_mod, 'shift'], ['r', 'Up'], lazy.layout.shuffle_up(),
         'Move window up in current stack'),
-    # ([mod, 'shift'], ['t', 'Left'], lazy.layout.shuffle_left(),
+    # ([_mod, 'shift'], ['t', 'Left'], lazy.layout.shuffle_left(),
     #     'Move window left in current stack'),
-    # ([mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
+    # ([_mod, 'shift'], ['n', 'Right'], lazy.layout.shuffle_right(),
     #     'Move window right in current stack'),
 
-    # ([mod, 'control', 'shift'], ['s', 'Down'],
-    #     lazy.window.move_floating(0, 15),
-    #     'Move floating window down'),
-    # ([mod, 'control', 'shift'], ['r', 'Up'],
-    #     lazy.window.move_floating(0, -15),
-    #     'Move floating window up'),
-    # ([mod, 'control', 'shift'], ['t', 'Left'],
-    #     lazy.window.move_floating(-15, 0),
-    #     'Move floating window left'),
-    # ([mod, 'control', 'shift'], ['n', 'Right'],
-    #     lazy.window.move_floating(15, 0),
-    #     'Move floating window right'),
+    ([_mod, 'control'], ['s', 'Down'],
+        lazy.window.move_floating(0, _moving_floating),
+        'Move floating window down'),
+    ([_mod, 'control'], ['r', 'Up'],
+        lazy.window.move_floating(0, -_moving_floating),
+        'Move floating window up'),
+    ([_mod, 'control'], ['t', 'Left'],
+        lazy.window.move_floating(-_moving_floating, 0),
+        'Move floating window left'),
+    ([_mod, 'control'], ['n', 'Right'],
+        lazy.window.move_floating(_moving_floating, 0),
+        'Move floating window right'),
 
     # Flip
-    ([mod], 'q', lazy.layout.flip(),
-        'Flip pane'),
+    ([_mod], 'q', lazy.layout.flip(), 'Flip pane'),
 
     # Windows geometry
-    ([mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
-    ([mod], 'm', lazy.window.toggle_maximize(), 'Maximize'),
-    ([mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
+    ([_mod], 'f', lazy.window.toggle_fullscreen(), 'Toggle fullscreen'),
+    ([_mod], 'm', lazy.window.toggle_maximize(), 'Maximize'),
+    ([_mod, 'control'], 'f', lazy.window.toggle_floating(), 'Toggle Floating'),
     # MonadTall and Tile specific
-    ([mod], 'd', [lazy.layout.shrink(), lazy.layout.decrease_nmaster()],
+    ([_mod], 'd', [lazy.layout.shrink(), lazy.layout.decrease_nmaster()],
         'Shrink window (MonadTall), decrease number in master pane (Tile)'),
-    ([mod], 'l', [lazy.layout.grow(), lazy.layout.increase_nmaster()],
+    ([_mod], 'l', [lazy.layout.grow(), lazy.layout.increase_nmaster()],
         'Expand window (MonadTall), increase number in master pane (Tile)'),
     # Tile specific
-    ([mod], 'v', lazy.layout.decrease_ratio(),
+    ([_mod], 'v', lazy.layout.decrease_ratio(),
         'Decrease ratio (Tile)'),
-    ([mod], 'j', lazy.layout.increase_ratio(),
+    ([_mod], 'j', lazy.layout.increase_ratio(),
         'Increase ratio (Tile)'),
-    # Bsp specific
-    # ([mod], 'd', lazy.layout.grow_down(), 'Grow down'),
-    # ([mod], 'l', lazy.layout.grow_up(), 'Grow up'),
-    # ([mod], 'v', lazy.layout.grow_left(), 'Grow left'),
-    # ([mod], 'j', lazy.layout.grow_right(), 'Grow right'),
 
     # Switch window focus to other pane(s) of stack
-    ([mod], 'space', lazy.layout.next(),
+    ([_mod], 'space', lazy.layout.next(),
         'Switch window focus to other pane(s) of stack'),
 
     # Swap panes of split stack
-    ([mod, 'shift'], 'space', lazy.layout.rotate(),
+    ([_mod, 'shift'], 'space', lazy.layout.rotate(),
         'Swap panes of split stack'),
 
     # Toggle between different layouts
-    ([mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
-    ([mod, 'shift'], 'Tab', lazy.prev_layout(), 'Toggle between layouts'),
+    ([_mod], 'Tab', lazy.next_layout(), 'Toggle between layouts'),
+    ([_mod, 'shift'], 'Tab', lazy.prev_layout(), 'Toggle between layouts'),
 
     # Close window
-    ([mod], ['c', 'eacute'], lazy.window.kill(), 'Close focused window'),
-    ([alt], 'F4', lazy.window.kill(), 'Close focused window'),
+    ([_mod], ['c', 'eacute'], lazy.window.kill(), 'Close focused window'),
+    ([_alt], 'F4', lazy.window.kill(), 'Close focused window'),
 
     # Qtile session
-    ([mod, 'control'], 'o', lazy.restart(), 'Restart qtile'),
-    ([mod, 'control'], 'q', lazy.shutdown(), 'Shutdown qtile'),
+    ([_mod, 'control'], 'o', lazy.restart(), 'Restart qtile'),
+    ([_mod, 'control'], 'q', lazy.shutdown(), 'Shutdown qtile'),
 
     # Run prompt
-    # ([mod], 'x', lazy.spawncmd(),
-    #     'Spawn a command using a prompt widget'),
+    ([_mod], 'x', lazy.spawncmd(), 'Spawn a command using a prompt widget'),
 
     # Switch between groups
-    ([mod], ['t'], lazy.screen.prev_group(),
+    ([_mod], ['t'], lazy.screen.prev_group(),
         'Move to the group on the left'),
-    ([mod, 'control'], 'Left', lazy.screen.prev_group(),
+    ([_mod, 'control'], 'Left', lazy.screen.prev_group(),
         'Move to the group on the left'),
-    ([mod], ['n'], lazy.screen.next_group(),
+    ([_mod], ['n'], lazy.screen.next_group(),
         'Move to the group on the right'),
-    ([mod, 'control'], 'Right', lazy.screen.next_group(),
+    ([_mod, 'control'], 'Right', lazy.screen.next_group(),
         'Move to the group on the right'),
-    ([alt], 'Tab', lazy.screen.toggle_group(),
+    ([_alt], 'Tab', lazy.screen.toggle_group(),
         'Move to the last visited group'),
 
     # Screens
     # Switch focus of monitors
-    ([mod, 'control'], 'quotedbl', lazy.to_screen(0),
+    ([_mod, 'control'], 'quotedbl', lazy.to_screen(0),
         'Set focus to monitor 1'),
-    ([mod, 'control'], 'guillemotleft', lazy.to_screen(1),
+    ([_mod, 'control'], 'guillemotleft', lazy.to_screen(1),
         'Set focus to monitor 2'),
-    ([mod], 'g', lazy.next_screen(), 'Set focus to next monitor'),
-    ([mod], 'h', lazy.prev_screen(), 'Set focus to prev monitor'),
+    ([_mod], 'g', lazy.next_screen(), 'Set focus to next monitor'),
+    ([_mod], 'h', lazy.prev_screen(), 'Set focus to prev monitor'),
     # Move to specific monitor
-    ([mod, 'control', 'shift'], 'quotedbl',
+    ([_mod, 'control', 'shift'], 'quotedbl',
         [lazy.window.toscreen(0),
          lazy.to_screen(0)],
         'Move to monitor 1'),
-    ([mod, 'control', 'shift'], 'guillemotleft',
+    ([_mod, 'control', 'shift'], 'guillemotleft',
         [lazy.window.toscreen(1),
          lazy.to_screen(1)],
         'Move to monitor 2')]
 
-for modifiers, key, commands, desc in keys_assignation:
+
+def _assign_multiple_keys(keys, modifiers, key, *commands, desc=''):
+    for k in key:
+        keys.append(Key(modifiers, k, *commands, desc=desc))
+
+
+for modifiers, key, commands, desc in _keys_assignation:
     if not isinstance(commands, (tuple, list)):
         commands = [commands]
     if isinstance(key, (tuple, list)):
-        assign_multiple_keys(keys, modifiers, key, *commands, desc='')
+        _assign_multiple_keys(keys, modifiers, key, *commands, desc='')
     else:
         keys.append(Key(modifiers, key, *commands, desc=desc))
 
 for name, data in groups_config.items():
     # Create group
-    cfg_matches = data.get('matches')
-    if cfg_matches is not None:
-        matches = [Match(**x) for x in cfg_matches]
-    else:
-        matches = None
-    groups.append(
-        Group(name, layout=data.get('layout'), matches=matches))
+    matches = data.get('matches')
+    if matches is not None:
+        matches = [Match(**x) for x in matches]
+    groups.append(Group(name, layout=data.get('layout'), matches=matches))
     # Bind key
     keys.extend([
         # Switch to group
-        Key([mod], data['key'], lazy.group[name].toscreen(),
+        Key([_mod], data['key'], lazy.group[name].toscreen(),
             desc=f'Switch to group {name}'),
         # Send current window to another group
-        Key([mod, 'shift'], data['key'],
+        Key([_mod, 'shift'], data['key'],
             lazy.window.togroup(name, switch_group=False),
             desc=f'Switch and move focused window to group {name}')])
-
-active_color = '555555'
-inactive_color = '404040'
-
-layout_theme = {
-    'border_width': 1,
-    'margin': 5,
-    'border_focus': 'dimgrey',
-    'border_normal': '313131'}
 
 layouts = [
     layout.Tile(
         shift_windows=True,
         master_match=Match(**master_match),
-        **layout_theme),
+        **_layout_theme),
     layout.MonadTall(
         new_client_position='after_current',
-        ratio=0.65, **layout_theme),
-    layout.Max(**layout_theme),
+        ratio=0.65, **_layout_theme),
+    layout.Max(**_layout_theme),
     layout.TreeTab(
-        **layout_theme,
+        **_layout_theme,
         fontsize=12,
-        sections=['tab'],
+        sections=['tab1', 'tab2'],
         section_fontsize=12,
         bg_color='131313',
-        active_bg=active_color,
+        active_bg=_active_color,
         active_fg='ffffff',
         inactive_bg='131313',
-        inactive_fg=inactive_color,
+        inactive_fg=_inactive_color,
         panel_width=150),
-    layout.Floating(**layout_theme)]
+    layout.Floating(**_layout_theme)]
 
 widget_defaults = dict(
-    font='sans',
-    fontsize=12,
-    padding=3)
+    font='ubuntu',
+    fontsize=13,
+    padding=3,
+    foreground=_font_color)
 extension_defaults = widget_defaults.copy()
 
-graph_theme = {
-    'border_color': '333333',
-    'border_width': 1,
-    'graph_color': '333333',
-    'line_width': 1,
-    'fill_color': active_color}
+# _graph_theme = {
+#     'border_color': '333333',
+#     'border_width': 1,
+#     'graph_color': '333333',
+#     'line_width': 1,
+#     'fill_color': _active_color}
 
 
-def create_groupbox():
+def _create_groupbox():
     return widget.GroupBox(
         borderwidth=2,
         highlight_method='line',
-        highlight_color=['000000', '000000'],
-        this_current_screen_border=active_color,
-        inactive=inactive_color)
+        highlight_color=['252525'] * 2,
+        active=_font_color,
+        inactive=_inactive_color,
+        disable_drag=True,
+        this_current_screen_border='787878',
+        this_screen_border='787878')
 
+
+def _create_tasklist():
+    return widget.TaskList(
+        border=_active_color,
+        borderwidth=1,
+        highlight_method='block',
+        markup_floating='f',
+        markup_focused='',
+        markup_maximized='m',
+        markup_minimized='_',
+        markup_normal='')
+
+
+_sep = widget.Sep(size_percent=70, foreground=_inactive_color)
 
 screens = [
     Screen(
         wallpaper='~/wallpaper.png',
         wallpaper_mode='fill',
-        top=bar.Bar(
-            [
-                create_groupbox(),
-                # widget.Sep(),
-                # widget.Prompt(),
-                widget.Sep(),
-                widget.WindowName(),
-                widget.Sep(),
-                widget.TaskList(
-                    border=active_color,
-                    borderwidth=1,
-                    highlight_method='block',
-                    max_title_width=250),
-                # widget.KeyboardLayout(),
-                # widget.Sep(),
-                # widget.Backlight(),
-                widget.Sep(),
-                widget.CPUGraph(**graph_theme),
-                widget.MemoryGraph(**graph_theme),
-                widget.SwapGraph(**graph_theme),
-                widget.Sep(),
-                widget.CurrentLayout(),
-                widget.Sep(),
-                widget.Systray(),
-                widget.TextBox(text='🔊'),
-                widget.Volume(),
-                widget.Sep(),
-                widget.Clock(format='%Y-%m-%d %H:%M'),
-                widget.Sep(),
-                widget.QuickExit()
-            ],
+        top=bar.Bar([
+            _create_groupbox(),
+            widget.Prompt(),
+            _create_tasklist(),
+            widget.CPU(format='cpu: {load_percent}%'),
+            widget.Memory(
+                format=(
+                    'mem: {MemPercent:.1f}% '
+                    'swap: {SwapPercent:.1f}%'),
+                measure_mem='G',
+                measure_swap='G'),
+            # widget.CPUGraph(**_graph_theme),
+            # widget.MemoryGraph(**_graph_theme),
+            # widget.SwapGraph(**_graph_theme),
+            _sep,
+            widget.CurrentLayout(),
+            _sep,
+            widget.Systray(),
+            widget.TextBox(text='🔊'),
+            widget.Volume(),
+            _sep,
+            widget.Clock(format='%Y-%m-%d %H:%M'),
+            _sep,
+            widget.QuickExit()],
             25,
-            background='131313'
-        ),
-    ),
+            background='171717')),
     Screen(
         wallpaper='~/wallpaper.png',
         wallpaper_mode='fill',
-        top=bar.Bar(
-            [
-                create_groupbox(),
-                widget.Sep(),
-                widget.CurrentLayout(),
-                widget.Sep(),
-                widget.WindowName(),
-                widget.Sep(),
-                widget.TaskList(
-                    border=active_color,
-                    borderwidth=1,
-                    highlight_method='block',
-                    max_title_width=250)
-            ],
+        top=bar.Bar([
+            _create_groupbox(),
+            _create_tasklist(),
+            widget.CurrentLayout()],
             25,
-        ),
-    ),
-]
+            background='171717'))]
 
 mouse = [
-    Drag([mod], 'Button1', lazy.window.set_position_floating(),
+    Drag([_mod], 'Button1', lazy.window.set_position_floating(),
          start=lazy.window.get_position()),
-    Drag([mod], 'Button3', lazy.window.set_size_floating(),
+    Drag([_mod], 'Button3', lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
-    Click([mod], 'Button2', lazy.window.bring_to_front()),
-    Click([mod, 'control'], 'Button1', lazy.window.toggle_floating())]
+    Click([_mod], 'Button2', lazy.window.bring_to_front()),
+    Click([_mod, 'control'], 'Button1', lazy.window.toggle_floating())]
 
 dgroups_key_binder = None
 dgroups_app_rules = []
@@ -293,7 +277,7 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry')],  # GPG key password entry
-    **layout_theme)
+    **_layout_theme)
 auto_fullscreen = True
 focus_on_window_activation = 'smart'
 reconfigure_screens = True
