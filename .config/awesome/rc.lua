@@ -101,6 +101,11 @@ local awesome_menu = {
   {'hotkeys', function() hotkeys_popup.show_help(nil, awful.screen.focused()) end},
   {'manual', terminal .. ' -e man awesome'},
   {'edit config', editor_cmd .. ' ' .. awesome.conffile},
+  {'toggle titlebar', function()
+      for _, c in ipairs(client.get()) do
+        awful.titlebar.toggle(c)
+      end
+    end},
   {'restart', awesome.restart},
   {'quit', function() awesome.quit() end},
 }
@@ -118,9 +123,6 @@ local launcher = awful.widget.launcher({
 -- Menubar configuration
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
-
--- Keyboard map indicator and switcher
-local keyboard_layout = awful.widget.keyboardlayout()
 
 -- {{{ Wibar
 -- Create a textclock widget
@@ -149,7 +151,7 @@ local volume_widget = wibox.widget{
 function volume_widget:update()
   local get_volume_cmd = "amixer sget Master | grep 'Left:' | awk -F'[][]' '{print $2}'"
   awful.spawn.easy_async_with_shell(get_volume_cmd, function(out)
-      self.markup = 'volume ' .. out
+      self.markup = '🔊 ' .. out
   end)
 end
 
@@ -275,7 +277,14 @@ awful.screen.connect_for_each_screen(function(s)
   s.tasklist_widget = awful.widget.tasklist{
     screen = s,
     filter = awful.widget.tasklist.filter.currenttags,
-    buttons = tasklist_buttons}
+    buttons = tasklist_buttons,
+    style = {disable_task_name = true}}
+
+  -- Create a title focused window
+  s.tasktitle_widget = awful.widget.tasklist{
+    screen = s,
+    filter = awful.widget.tasklist.filter.focused,
+    style = {tasklist_disable_icon = true}}
 
   -- Create the wibox
   s.main_wibar = awful.wibar({position = 'top', screen = s})
@@ -292,16 +301,15 @@ awful.screen.connect_for_each_screen(function(s)
     { -- Middle widget
       layout = wibox.layout.fixed.horizontal,
       s.tasklist_widget,
+      s.tasktitle_widget,
     },
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
-      keyboard_layout,
-      wibox.widget.systray(),
-      separator_widget,
       memory_widget,
       separator_widget,
       battery_widget,
       separator_widget,
+      wibox.widget.systray(),
       volume_widget,
       separator_widget,
       textclock_widget,
@@ -411,11 +419,11 @@ local globalkeys = gears.table.join(
     {description = 'select previous', group = 'layout'}),
 
   -- Prompt
-  -- awful.key(
-    -- {altkey}, 'r', function() awful.screen.focused().prompt_box:run() end,
-    -- {description = 'run prompt', group = 'launcher'}),
   awful.key(
-    {modkey}, 'x',
+    {modkey}, 'x', function() awful.screen.focused().prompt_box:run() end,
+    {description = 'run prompt', group = 'launcher'}),
+  awful.key(
+    {modkey, 'Control'}, 'x',
     function()
       awful.prompt.run{
         prompt = 'Run Lua code: ',
@@ -630,10 +638,10 @@ awful.rules.rules = {
     properties = {floating = true}
   },
 
-  -- Add titlebars to normal clients and dialogs
+  -- Titlebars to normal clients and dialogs
   {
     rule_any = {type = {'normal', 'dialog'}},
-    properties = {titlebars_enabled = true}
+    properties = {titlebars_enabled = false}
   },
 
   -- Make dialogs ontop to avoid losing them behind tiled windows

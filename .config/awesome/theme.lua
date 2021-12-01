@@ -10,7 +10,7 @@ local theme = {}
 -- Add any variables and access them by using beautiful.variable in your rc.lua
 
 theme.wallpaper = '~/wallpaper.png'
-theme.font = 'sans 10'
+theme.font = 'ubuntu 11'
 
 theme.bg_normal = '#222222'
 theme.bg_focus = '#131313'
