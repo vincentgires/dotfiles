@@ -222,8 +222,8 @@ screens = [
         wallpaper_mode='fill',
         top=bar.Bar([
             _create_groupbox(),
-            widget.Prompt(),
             _create_tasklist(),
+            widget.Prompt(),
             widget.CPU(format='cpu: {load_percent}%'),
             widget.Memory(
                 format=(
