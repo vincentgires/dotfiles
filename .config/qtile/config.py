@@ -3,7 +3,8 @@ from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from qtile_cfg import (
-    groups_config, master_match, font, font_size, wallpaper, bar_size)
+    groups_config, master_match, font, font_size, wallpaper, bar_size,
+    floating_rules)
 
 wmname = 'Qtile'
 groups = []
@@ -272,6 +273,7 @@ bring_front_click = False
 cursor_warp = False
 floating_layout = layout.Floating(float_rules=[
     *layout.Floating.default_float_rules,
+    *[Match(**i) for i in floating_rules],
     Match(wm_class='confirmreset'),  # gitk
     Match(wm_class='makebranch'),  # gitk
     Match(wm_class='maketag'),  # gitk

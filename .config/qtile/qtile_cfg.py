@@ -36,6 +36,9 @@ groups_config = {
         'key': 'asterisk',
         'layout': 'tile'}}
 master_match = {'wm_class': ['kdevelop', 'Nuke', 'maya.bin', 'Blender']}
+floating_rules = [
+    {'wm_class': 'vlc', 'title': 'Current Media Information'},
+    {'wm_class': 'maya.bin', 'title': 'Render Settings'}]
 font = 'ubuntu'
 font_size = 13
 wallpaper = '~/wallpaper.png'
