@@ -2,7 +2,8 @@ import os
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
-from qtile_cfg import groups_config, master_match
+from qtile_cfg import (
+    groups_config, master_match, font, font_size, wallpaper, bar_size)
 
 wmname = 'Qtile'
 groups = []
@@ -176,8 +177,8 @@ layouts = [
     layout.Floating(**_layout_theme)]
 
 widget_defaults = dict(
-    font='ubuntu',
-    fontsize=13,
+    font=font,
+    fontsize=font_size,
     padding=3,
     foreground=_font_color)
 extension_defaults = widget_defaults.copy()
@@ -218,7 +219,7 @@ _sep = widget.Sep(size_percent=70, foreground=_inactive_color)
 
 screens = [
     Screen(
-        wallpaper='~/wallpaper.png',
+        wallpaper=wallpaper,
         wallpaper_mode='fill',
         top=bar.Bar([
             _create_groupbox(),
@@ -244,16 +245,16 @@ screens = [
             widget.Clock(format='%Y-%m-%d %H:%M'),
             _sep,
             widget.QuickExit()],
-            25,
+            bar_size,
             background='171717')),
     Screen(
-        wallpaper='~/wallpaper.png',
+        wallpaper=wallpaper,
         wallpaper_mode='fill',
         top=bar.Bar([
             _create_groupbox(),
             _create_tasklist(),
             widget.CurrentLayout()],
-            25,
+            bar_size,
             background='171717'))]
 
 mouse = [

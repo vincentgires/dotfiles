@@ -35,5 +35,8 @@ groups_config = {
     'review': {
         'key': 'asterisk',
         'layout': 'tile'}}
-
 master_match = {'wm_class': ['kdevelop', 'Nuke', 'maya.bin', 'Blender']}
+font = 'ubuntu'
+font_size = 13
+wallpaper = '~/wallpaper.png'
+bar_size = 25
