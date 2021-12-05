@@ -173,6 +173,20 @@ function battery_widget:update()
   end
 end
 
+-- Create cpu widget
+local cpu_widget = wibox.widget{
+  markup = 'cpu',
+  align = 'center',
+  valign = 'center',
+  widget = wibox.widget.textbox}
+
+function cpu_widget:update()
+  local get_cpu_cmd = "top -b -n1 | grep 'Cpu(s)' | awk '{print int(($2 + $4)) \"%\"}'"
+  awful.spawn.easy_async_with_shell(get_cpu_cmd, function(out)
+      self.markup = 'cpu ' .. out
+  end)
+end
+
 -- Create memory widget
 local memory_widget = wibox.widget{
   markup = 'memory',
@@ -181,9 +195,9 @@ local memory_widget = wibox.widget{
   widget = wibox.widget.textbox}
 
 function memory_widget:update()
-  local get_memory_cmd = 'free -h | awk \'/Mem:/ {print $3 " / " $2}\''
+  local get_memory_cmd = 'free | awk \'/^Mem/ {print int(($3 / $2) * 100) "%"}\''
   awful.spawn.easy_async_with_shell(get_memory_cmd, function(out)
-      self.markup = 'memory ' .. out
+      self.markup = 'mem ' .. out
   end)
 end
 
@@ -305,6 +319,8 @@ awful.screen.connect_for_each_screen(function(s)
     },
     { -- Right widgets
       layout = wibox.layout.fixed.horizontal,
+      cpu_widget,
+      separator_widget,
       memory_widget,
       separator_widget,
       battery_widget,
@@ -741,6 +757,7 @@ gears.timer{
   autostart = true,
   callback = function()
     battery_widget:update()
+    cpu_widget:update()
     memory_widget:update()
   end
 }
