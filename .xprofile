@@ -1,2 +1,9 @@
+export TERMINAL=alacritty
+export FILE_MANAGER=thunar
+export BROWSER=firefox
+export EDITOR=vim
+
+export QT_QPA_PLATFORMTHEME=qt5ct
+
 xbindkeys &
 xset r rate 220 35 &
