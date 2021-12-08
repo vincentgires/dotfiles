@@ -1,3 +1,5 @@
+import re
+
 groups_config = {
     'main': {
         'key': 'quotedbl',
@@ -37,8 +39,10 @@ groups_config = {
         'layout': 'tile'}}
 master_match = {'wm_class': ['kdevelop', 'Nuke', 'maya.bin', 'Blender']}
 floating_rules = [
-    {'wm_class': 'vlc', 'title': 'Current Media Information'},
-    {'wm_class': 'maya.bin', 'title': 'Render Settings'}]
+    {'wm_instance_class': 'vlc'},
+    {'wm_class': 'maya.bin',
+     'title': ['Script Editor', 'Final pre-check', 'Batch render']},
+    {'wm_class': 'maya.bin', 'title': re.compile('Render Settings.*')}]
 font = 'ubuntu'
 font_size = 13
 wallpaper = '~/wallpaper.png'
