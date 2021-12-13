@@ -41,7 +41,9 @@ master_match = {'wm_class': ['kdevelop', 'Nuke', 'maya.bin', 'Blender']}
 floating_rules = [
     {'wm_instance_class': 'vlc'},
     {'wm_class': 'maya.bin',
-     'title': ['Script Editor', 'Final pre-check', 'Batch render']},
+     'title': [
+         'Script Editor', 'Node Editor', 'Final pre-check', 'Batch render',
+         'nWave Fenix4Maya']},
     {'wm_class': 'maya.bin', 'title': re.compile('Render Settings.*')}]
 font = 'ubuntu'
 font_size = 13
