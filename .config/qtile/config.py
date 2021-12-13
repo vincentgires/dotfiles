@@ -1,4 +1,5 @@
 import os
+import subprocess
 from libqtile import bar, layout, widget
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
@@ -9,6 +10,7 @@ from qtile_cfg import (
 wmname = 'Qtile'
 groups = []
 keys = []
+screens = []
 _mod = 'mod4'
 _alt = 'mod1'
 _moving_floating = 15
@@ -184,6 +186,14 @@ widget_defaults = dict(
     foreground=_font_color)
 extension_defaults = widget_defaults.copy()
 
+
+def _get_monitors():
+    xr = subprocess.check_output(
+        'xrandr --query | grep " connected"', shell=True).decode().split('\n')
+    monitors = len(xr) - 1 if len(xr) > 2 else len(xr)
+    return monitors
+
+
 # _graph_theme = {
 #     'border_color': '333333',
 #     'border_width': 1,
@@ -218,45 +228,49 @@ def _create_tasklist():
 
 _sep = widget.Sep(size_percent=70, foreground=_inactive_color)
 
-screens = [
-    Screen(
-        wallpaper=wallpaper,
-        wallpaper_mode='fill',
-        top=bar.Bar([
-            _create_groupbox(),
-            _create_tasklist(),
-            widget.Prompt(),
-            widget.CPU(format='cpu: {load_percent}%'),
-            widget.Memory(
-                format=(
-                    'mem: {MemPercent:.1f}% '
-                    'swap: {SwapPercent:.1f}%'),
-                measure_mem='G',
-                measure_swap='G'),
-            # widget.CPUGraph(**_graph_theme),
-            # widget.MemoryGraph(**_graph_theme),
-            # widget.SwapGraph(**_graph_theme),
-            _sep,
-            widget.CurrentLayout(),
-            _sep,
-            widget.Systray(),
-            widget.TextBox(text='🔊'),
-            widget.Volume(),
-            _sep,
-            widget.Clock(format='%Y-%m-%d %H:%M'),
-            _sep,
-            widget.QuickExit()],
-            bar_size,
-            background='171717')),
-    Screen(
-        wallpaper=wallpaper,
-        wallpaper_mode='fill',
-        top=bar.Bar([
-            _create_groupbox(),
-            _create_tasklist(),
-            widget.CurrentLayout()],
-            bar_size,
-            background='171717'))]
+for monitor in range(_get_monitors()):
+    if monitor == 0:
+        screens.append(
+            Screen(
+                wallpaper=wallpaper,
+                wallpaper_mode='fill',
+                top=bar.Bar([
+                    _create_groupbox(),
+                    _create_tasklist(),
+                    widget.Prompt(),
+                    widget.CPU(format='cpu: {load_percent}%'),
+                    widget.Memory(
+                        format=(
+                            'mem: {MemPercent:.1f}% '
+                            'swap: {SwapPercent:.1f}%'),
+                        measure_mem='G',
+                        measure_swap='G'),
+                    # widget.CPUGraph(**_graph_theme),
+                    # widget.MemoryGraph(**_graph_theme),
+                    # widget.SwapGraph(**_graph_theme),
+                    _sep,
+                    widget.CurrentLayout(),
+                    _sep,
+                    widget.Systray(),
+                    widget.TextBox(text='🔊'),
+                    widget.Volume(),
+                    _sep,
+                    widget.Clock(format='%Y-%m-%d %H:%M'),
+                    _sep,
+                    widget.QuickExit()],
+                    bar_size,
+                    background='171717')))
+    else:
+        screens.append(
+            Screen(
+                wallpaper=wallpaper,
+                wallpaper_mode='fill',
+                top=bar.Bar([
+                    _create_groupbox(),
+                    _create_tasklist(),
+                    widget.CurrentLayout()],
+                    bar_size,
+                    background='171717')))
 
 mouse = [
     Drag([_mod], 'Button1', lazy.window.set_position_floating(),
