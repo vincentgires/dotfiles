@@ -20,11 +20,11 @@
   XF86AudioMute
 
 # lower volume
-"amixer -c 0 sset Master 1- unmute"
+"amixer sset Master 1%- unmute"
   XF86AudioLowerVolume
 
 # raise volume
-"amixer -c 0 sset Master 1+ unmute"
+"amixer sset Master 1%+ unmute"
   XF86AudioRaiseVolume
 
 "xbacklight -dec 15"

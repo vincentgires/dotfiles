@@ -137,8 +137,8 @@ local separator_widget = wibox.widget{
 volume_buttons = awful.util.table.join(
     awful.button({}, 1, function() awful.spawn(terminal .. ' -e alsamixer') end),
     awful.button({}, 2, function() awful.spawn('amixer -q set Master toggle') end), -- mute
-    awful.button({}, 4, function() awful.spawn('amixer -c 0 sset Master 1+ unmute') end), -- raise
-    awful.button({}, 5, function() awful.spawn('amixer -c 0 sset Master 1- unmute') end) -- lower
+    awful.button({}, 4, function() awful.spawn('amixer sset Master 1%+ unmute') end), -- raise
+    awful.button({}, 5, function() awful.spawn('amixer sset Master 1%- unmute') end) -- lower
 )
 
 local volume_widget = wibox.widget{
