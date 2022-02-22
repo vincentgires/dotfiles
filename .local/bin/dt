@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+export OCIO=~/color/aces_1.2/config_custom.ocio
+export LUA_PATH=~/dev/darktable-scripts/lua/?.lua
+darktable -d lua
