@@ -37,14 +37,18 @@ groups_config = {
     'review': {
         'key': 'asterisk',
         'layout': 'tile'}}
-master_match = {'wm_class': ['kdevelop', 'Nuke', 'maya.bin', 'Blender']}
+master_match = [
+    {'wm_class': ['kdevelop', 'Nuke', 'Blender']},
+    {'wm_class': 'maya.bin', 'title': re.compile('.*Autodesk Maya.*')}]
 floating_rules = [
-    {'wm_instance_class': 'vlc'},
+    {'wm_instance_class': ['vlc', 'TeamViewer']},
     {'wm_class': 'maya.bin',
      'title': [
          'Script Editor', 'Node Editor', 'Final pre-check', 'Batch render',
          'nWave Fenix4Maya']},
-    {'wm_class': 'maya.bin', 'title': re.compile('Render Settings.*')}]
+    {'wm_class': 'maya.bin', 'title': re.compile('Render Settings.*')},
+    {'wm_class': 'maya.bin', 'title': re.compile('.*Options.*')}
+]
 font = 'ubuntu'
 font_size = 13
 wallpaper = '~/wallpaper.png'

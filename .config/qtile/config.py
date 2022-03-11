@@ -160,7 +160,7 @@ for name, data in groups_config.items():
 layouts = [
     layout.Tile(
         shift_windows=True,
-        master_match=Match(**master_match),
+        master_match=[Match(**match) for match in master_match],
         **_layout_theme),
     layout.MonadTall(
         new_client_position='after_current',
