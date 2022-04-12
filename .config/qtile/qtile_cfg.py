@@ -7,7 +7,7 @@ groups_config = {
     'net': {
         'key': 'guillemotleft',
         'layout': 'tile',
-        'matches': [{'wm_class': ['Firefox']}]},
+        'matches': [{'wm_class': ['firefox']}]},
     'dev': {
         'key': 'guillemotright',
         'layout': 'tile',
