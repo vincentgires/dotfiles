@@ -11,7 +11,7 @@ groups_config = {
     'dev': {
         'key': 'guillemotright',
         'layout': 'tile',
-        'matches': [{'wm_class': ['kdevelop']}]},
+        'matches': [{'wm_class': ['kdevelop', 'code']}]},
     'chat': {
         'key': 'parenleft',
         'layout': 'tile',
@@ -38,7 +38,7 @@ groups_config = {
         'key': 'asterisk',
         'layout': 'tile'}}
 master_match = [
-    {'wm_class': ['kdevelop', 'Nuke', 'Blender']},
+    {'wm_class': ['kdevelop', 'Nuke', 'Blender', 'code']},
     {'wm_class': 'maya.bin', 'title': re.compile('.*Autodesk Maya.*')}]
 floating_rules = [
     {'wm_instance_class': ['vlc', 'TeamViewer']},
