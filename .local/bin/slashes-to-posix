@@ -1,0 +1,3 @@
+#!/bin/bash
+xclip -o | sed -e 's/\\/\//g' | xclip -selection clipboard
+
