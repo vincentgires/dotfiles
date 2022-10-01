@@ -163,7 +163,7 @@ local battery_widget = wibox.widget{
   widget = wibox.widget.textbox}
 
 function battery_widget:update()
-  local capacity_file = '/sys/class/power_supply/BAT1/capacity'
+  local capacity_file = '/sys/class/power_supply/BAT0/capacity'
   local f = io.open(capacity_file, 'r')
   if f then
     self.markup = 'battery ' .. f:read() .. '%'
