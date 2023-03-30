@@ -6,7 +6,7 @@
 # keystate_capslock = enable
 # keystate_scrolllock= enable
 
-"dmenu_run -p Run: -l 5 -sb dimgrey"
+"dmenu_run -p Run: -l 5 -sb dimgrey -fn 'ubuntu:pixelsize=14'"
   mod1 + space
 
 "$TERMINAL"

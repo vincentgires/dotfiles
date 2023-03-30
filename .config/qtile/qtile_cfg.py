@@ -1,51 +1,57 @@
 import re
 
 groups_config = {
-    'main': {
+    '1. main': {
         'key': 'quotedbl',
         'layout': 'tile'},
-    'net': {
+    '2. net': {
         'key': 'guillemotleft',
         'layout': 'tile',
         'matches': [{'wm_class': ['firefox']}]},
-    'dev': {
+    '3. dev': {
         'key': 'guillemotright',
         'layout': 'tile',
         'matches': [{'wm_class': ['kdevelop', 'code']}]},
-    'chat': {
+    '4. chat': {
         'key': 'parenleft',
         'layout': 'tile',
         'matches': [{'wm_class': ['element', 'discord']}]},
-    'media': {
+    '5. media': {
         'key': 'parenright',
         'layout': 'tile'},
-    'work': {
+    '6. work': {
         'key': 'at',
         'layout': 'tile'},
-    'lighting': {
+    '7. maya': {
         'key': 'plus',
         'layout': 'tile',
         'matches': [{'wm_class': ['maya.bin']}]},
-    'compositing': {
+    '8. nuke': {
         'key': 'minus',
         'layout': 'tile',
         'matches': [{'wm_class': ['Nuke']}]},
-    'farm': {
+    '9. muster': {
         'key': 'slash',
         'layout': 'tile',
         'matches': [{'wm_class': ['xConsole.bin']}]},
-    'review': {
+    '0. review': {
         'key': 'asterisk',
         'layout': 'tile'}}
 master_match = [
-    {'wm_class': ['kdevelop', 'Nuke', 'Blender', 'code']},
-    {'wm_class': 'maya.bin', 'title': re.compile('.*Autodesk Maya.*')}]
+    {'wm_class': [
+        'kdevelop',
+        'Nuke',
+        'Blender',
+        'code',
+        'Katana']},
+    {'wm_class': 'maya.bin',
+     'title': re.compile('.*Autodesk Maya.*', re.IGNORECASE)}]
 floating_rules = [
     {'wm_instance_class': ['vlc', 'TeamViewer']},
     {'wm_class': 'maya.bin',
      'title': [
-         'Script Editor', 'Node Editor', 'Final pre-check', 'Batch render',
-         'nWave Fenix4Maya']},
+         'Script Editor',
+         'Node Editor']},
     {'wm_class': 'maya.bin', 'title': re.compile('Render Settings.*')},
     {'wm_class': 'maya.bin', 'title': re.compile('.*Options.*')}
 ]

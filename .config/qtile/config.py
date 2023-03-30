@@ -1,6 +1,6 @@
 import os
 import subprocess
-from libqtile import bar, layout, widget
+from libqtile import bar, layout, widget, hook
 from libqtile.config import Click, Drag, Group, Key, Match, Screen
 from libqtile.lazy import lazy
 from qtile_cfg import (
@@ -14,6 +14,7 @@ screens = []
 _mod = 'mod4'
 _alt = 'mod1'
 _moving_floating = 15
+_ratio = 0.65
 _font_color = 'c3c3c3'
 _active_color = '353535'
 _inactive_color = '454545'
@@ -161,10 +162,10 @@ layouts = [
     layout.Tile(
         shift_windows=True,
         master_match=[Match(**match) for match in master_match],
-        **_layout_theme),
+        ratio=_ratio, **_layout_theme),
     layout.MonadTall(
         new_client_position='after_current',
-        ratio=0.65, **_layout_theme),
+        ratio=_ratio, **_layout_theme),
     layout.Max(**_layout_theme),
     layout.TreeTab(
         **_layout_theme,
