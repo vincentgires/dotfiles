@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+python -i -c 'import os;import sys;import subprocess;import re;from pprint import pprint;d = {"a": "aa", "b": "bb"};l = ["a", "b", "c"]'

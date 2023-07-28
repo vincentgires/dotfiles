@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
-export OCIO=~/color/aces_1.2/config_custom.ocio
+export OCIO=~/color/aces_1.3/config_custom.ocio
+export PYTHONPATH=~/dev/blender-scripts/scripts/modules:~/dev/vgenc
 export BLENDER_USER_SCRIPTS=~/dev/blender-scripts/scripts
-blender $*
+blender "$@"

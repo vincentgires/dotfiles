@@ -1,2 +1,2 @@
 #!/bin/sh
-gitk --all -d &
+gitk --all -d "$@" &

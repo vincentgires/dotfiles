@@ -1,0 +1,2 @@
+#!/bin/bash
+youtube-dl -f bestaudio[ext=webm]/bestaudio "$@" --ignore-errors --verbose

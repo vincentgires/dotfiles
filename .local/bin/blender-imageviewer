@@ -1,0 +1,3 @@
+#!/bin/bash
+blender --python-expr 'import bpy;bpy.ops.wm.read_homefile(use_splash=False, app_template="image_viewer")' -- "$@"
+
