@@ -7,7 +7,7 @@ config = {
      properties = {tag = 'dev'}},
     {rule_any = {class = {'Element', 'discord'}},
      properties = {tag = 'chat'}},
-    {rule_any = {class = {'mpv', 'vlc', 'QjackCtl'}},
+    {rule_any = {class = {'mpv', 'vlc', 'Audacious', 'QjackCtl'}},
      properties = {floating = true, ontop = true}},
     {rule = {class = 'Blender'},
      properties = {maximized = false}}
