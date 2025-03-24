@@ -3,7 +3,8 @@ export FILE_MANAGER=thunar
 export BROWSER=firefox
 export EDITOR=vim
 
-export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_QPA_PLATFORMTHEME=qt6ct
 
 xbindkeys &
 xset r rate 220 35 &
+caffeine &
