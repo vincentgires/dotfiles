@@ -11,7 +11,8 @@ config = {
      properties = {floating = true, ontop = true}},
     {rule = {class = 'Blender'},
      properties = {maximized = false}}
-  }
+  },
+  master_classes = {'Blender', 'firefox', 'code-oss'}
 }
 
 return config

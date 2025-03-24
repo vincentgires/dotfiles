@@ -9,7 +9,7 @@ local image_path = '~/.config/awesome/images'
 local theme = {}
 -- Add any variables and access them by using beautiful.variable in your rc.lua
 
-theme.wallpaper = '~/wallpaper.png'
+theme.wallpaper = '/data/wallpaper.png'
 theme.font = 'ubuntu 11'
 
 theme.bg_normal = '#222222'

@@ -674,12 +674,44 @@ end
 
 -- }}}
 
+local function is_master_class(class)
+  for _, master_class in ipairs(config.master_classes) do
+    if class == master_class then
+      return true
+    end
+  end
+  return false
+end
+
+local function get_masters()
+  local masters = {}
+  local clients = awful.client.tiled()
+  for _, cl in ipairs(clients) do
+    if is_master_class(cl.class) then
+      table.insert(masters, cl)
+    end
+  end
+  return masters
+end
+
 -- {{{ Signals
 -- Signal function to execute when a new client appears
 client.connect_signal('manage', function(c)
   -- Set the windows at the slave
   -- i.e. put it at the end of others instead of setting it master
   -- if not awesome.startup then awful.client.setslave(c) end
+  
+  if is_master_class(c.class) then
+    -- If master, place in first
+    awful.client.setmaster(c)
+  else
+      local masters = get_masters()
+      -- Or place at after last master, placer après le dernier master
+      if #masters > 0 then
+          local last_master = masters[#masters]
+          c:swap(last_master)
+      end
+  end
 
   if awesome.startup
     and not c.size_hints.user_position
