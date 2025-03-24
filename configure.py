@@ -20,5 +20,6 @@ _create_symlink('.xprofile', '$HOME/.xprofile')
 _create_symlink('.config/fish/config.fish', '$HOME/.config/fish/config.fish', create_folder='$HOME/.config/fish')
 _create_symlink('.config/ranger/rc.conf', '$HOME/.config/ranger/rc.conf', create_folder='$HOME/.config/ranger')
 
-os.system('sudo pacman -S acpilight alacritty awesome dmenu fish git lxappearance mpv qt5ct qtile ranger tk ttf-hack ttf-ubuntu-font-family vim xbindkeys xorg-xev')
+os.system('sudo pacman -S acpilight alacritty awesome dmenu fish git lxappearance mpv qt6ct qtile tk ttf-hack ttf-ubuntu-font-family vim xbindkeys xorg-xev')
 os.system('chsh -s $(which fish)')
+os.system('sudo usermod -aG video $USER')  # xbacklight rights
