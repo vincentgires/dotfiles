@@ -277,6 +277,7 @@ mouse = [
          start=lazy.window.get_position()),
     Drag([_mod], 'Button3', lazy.window.set_size_floating(),
          start=lazy.window.get_size()),
+    Click([_mod], 'Button1', lazy.window.bring_to_front()),
     Click([_mod], 'Button2', lazy.window.bring_to_front()),
     Click([_mod, 'control'], 'Button1', lazy.window.toggle_floating())]
 
