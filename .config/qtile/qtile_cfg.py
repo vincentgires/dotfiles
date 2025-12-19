@@ -25,9 +25,10 @@ groups_config = {
 master_match = [
     {'wm_class': [
         'kdevelop',
-        'Nuke',
+        'firefox',
         'Blender',
-        'code']}]
+        'code',
+        'code-oss']}]
 floating_rules = [
     {'wm_instance_class': ['vlc', 'TeamViewer']}]
 font = 'ubuntu'

@@ -253,6 +253,7 @@ for monitor in range(_get_monitors()):
                     _sep,
                     widget.Systray(),
                     widget.TextBox(text='🔊'),
+                    widget.Battery(),
                     widget.Volume(),
                     _sep,
                     widget.Clock(format='%Y-%m-%d %H:%M'),
